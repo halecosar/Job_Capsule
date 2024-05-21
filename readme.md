@@ -1,4 +1,4 @@
-#ÖZELLİKLER  
+# ÖZELLİKLER  
 
 Kullanıcı kayıt ve giriş sistemi
 Aday profili oluşturma ve güncelleme
