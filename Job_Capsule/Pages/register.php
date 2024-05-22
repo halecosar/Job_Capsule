@@ -124,8 +124,8 @@
                                 </div>
                                 <div class="col">
                                     <div data-mdb-input-init class="form-outline form-white mb-3">
-                                        <label class="form-label" for="tel">Cep No</label>
-                                        <input type="tel" value="+90" id="typetel" name="tel"
+                                        <label class="form-label" for="file">CV Yükle</label>
+                                        <input type="file" id="typefile" name="file"
                                             class="form-control form-control-lg" />
 
                                         <small class="form-text text-muted" style="color:white"> *Bu alan
@@ -134,13 +134,15 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div>
+
+                                <button data-mdb-button-init data-mdb-ripple-init
+                                    class="btn btn-outline-light btn-lg px-5" type="submit">Kayıt Ol</button>
+                            </div>
                     </div>
 
-                    <div>
 
-                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5"
-                            type="submit">Kayıt Ol</button>
-                    </div>
 
                     <div class="d-flex justify-content-center text-center mt-3 pt-1">
                         <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>

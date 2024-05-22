@@ -15,7 +15,7 @@
         }
 
         .bg-custom {
-            background-color: #00A9FF;
+            background-color: transparent;
         }
     </style>
 </head>
@@ -59,7 +59,7 @@
                                 <p class="text-white-50 mb-4">E-posta adresinizi ve şifrenizi giriniz.</p>
                             </div>
                             <div>
-                                <div data-mdb-input-init class="form-outline form-white mb-3">
+                                <div data-mdb-input-init class="form-outline form-navy mb-3">
                                     <label class="form-label" for="typeuserName">Kullanıcı Adı</label>
                                     <input type="text" id="typeuserName" name="userName"
                                         class="form-control form-control-lg"
