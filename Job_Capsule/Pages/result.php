@@ -11,12 +11,16 @@
 </head>
 
 <body>
-    <form>
+
+    <form method="post" action="<?php echo htmlspecialchars('result.php'); ?>" enctype="multipart/form-data">
+        <!-- encytype eklemezsen dosya gitmez ve çalışmaz. -->
         <div class="form-group">
-            <label for="exampleFormControlFile1">Dosya Yükle</label>
-            <input type="file" class="form-control-file" id="exampleFormControlFile1">
+            <input type="file" class="form-control-file" id="exampleFormControlFile1" name="myFile">
         </div>
+        <button type="submit" class="btn btn-danger">Yükle</button>
     </form>
+
 </body>
+
 
 </html>
