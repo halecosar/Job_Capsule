@@ -61,16 +61,46 @@ function createJob(string $title, string $description, string $image, string $ur
 }
 
 
-function getJobs()
+// function getJobs()
+// {
+//     include "config.php";
+
+//     $query = "SELECT * FROM jobs WHERE is_deleted=0";
+//     $result = mysqli_query($connection, $query);
+//     $jobs = mysqli_fetch_all($result, MYSQLI_ASSOC);
+//     mysqli_close($connection);
+
+//     return $jobs;
+// }
+
+function getJobs($keyword, $page)
 {
     include "config.php";
 
-    $query = "SELECT * FROM jobs WHERE is_deleted=0";
-    $result = mysqli_query($connection, $query);
-    $jobs = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    mysqli_close($connection);
+    $pageCount = 1;
+    $offset = ($page - 1) * $pageCount;
+    $query = "";
 
-    return $jobs;
+    $query = "FROM jobs j WHERE j.is_deleted=0";
+
+    if (!empty($keyword)) {
+        $query .= " && (j.title LIKE '%$keyword%' or j.short_description LIKE '%$keyword%' or j.location LIKE '%$keyword%')";
+    }
+
+    $total_sql = "SELECT COUNT(*) " . $query;
+
+    $count_data = mysqli_query($connection, $total_sql);
+    $count = mysqli_fetch_array($count_data)[0];
+    $total_pages = ceil($count / $pageCount); //kaç eleman çekildi kaç sayfa yapılacak. 
+
+    $sql = "SELECT * " . $query . " LIMIT $offset, $pageCount";
+    $result = mysqli_query($connection, $sql);
+    mysqli_close($connection);
+    return array(
+        "total_pages" => $total_pages,
+        "data" => $result,
+        "totalCount" => $count
+    );
 }
 
 function getJobsCount()
