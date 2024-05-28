@@ -6,7 +6,7 @@ session_start();
 $id = intval($_GET['id']);
 
 if (deleteJob($id)) {
-    $_SESSION['message'] = $id . " id numaralı ilan silindi.";
+    $_SESSION['message'] = $id . " ID'li İlan Silindi.";
     $_SESSION['type'] = "danger";
 
     header('Location: jobList.php');

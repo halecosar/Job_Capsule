@@ -1,9 +1,10 @@
 <?php
 require "../libs/functions.php";
+session_start();
 
 // Değişkenlerin tanımlanması ve başlangıç değerleri
-$title = $short_description = $long_description = $location = $last_modified_by = "";
-$title_err = $short_description_err = $long_description_err = $location_err = $last_modified_by_err = "";
+$title = $short_description = $long_description = $location = $isActive = "";
+$title_err = $short_description_err = $long_description_err = $location_err = $isActive_err = "";
 
 // Form gönderildiğinde POST isteğiyle çalışacak kod
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -40,30 +41,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Konum doğrulama
     $input_location = trim($_POST["location"]);
+
     if (empty($input_location)) {
         $location_err = "Konum boş geçilemez.";
     } else {
         $location = Security($input_location);
     }
 
-    // Son değişikliği yapan kişi doğrulama
-    $input_last_modified_by = trim($_POST["last_modified_by"]);
-    if (empty($input_last_modified_by)) {
-        $last_modified_by_err = "Son değişikliği yapan kişi boş geçilemez.";
-    } else {
-        $last_modified_by = Security($input_last_modified_by);
-    }
+    $isActive = intval($_POST["isActive"]); //sayfadan post edilen datayı integer'a çevirdik.
 
     $isDeleted = 0; // Varsayılan olarak iş ilanı silinmemiştir
-    $isActive = 0; // Varsayılan olarak iş ilanı aktif değildir
-
     $created_on = date("Y-m-d H:i:s");
     $created_by = "admin";
     $last_modified_on = date("Y-m-d H:i:s");
 
     if (empty($title_err) && empty($short_description_err) && empty($long_description_err) && empty($location_err) && empty($last_modified_by_err)) {
         // createJob fonksiyonunu çağır ve dönen değeri kontrol et
-        $job_created = createJob($title, $short_description, $long_description, $location, $isDeleted, $isActive, $created_on, $created_by, $last_modified_on, $last_modified_by);
+        $job_created = createJob($title, $short_description, $long_description, $location, $isDeleted, $isActive, $created_by, $last_modified_by);
 
         // Eğer iş ilanı başarıyla eklendiyse
         if ($job_created) {
@@ -71,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['message'] = $title . " isimli iş ilanı eklendi";
             $_SESSION['type'] = "success";
             // Yönlendirme yap
-            header('Location: admin.php');
+            header('Location: JobList.php');
             // Kodun burada sonlanması için exit() fonksiyonunu kullan
             exit();
         } else {
@@ -84,59 +78,82 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php include "admin-nav.php"; ?>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Listings</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="jobInsert.php" method="POST" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Başlık</label>
+                                <input type="text" name="title" id="title"
+                                    class="form-control <?php echo (!empty($title_err)) ? 'is-invalid' : '' ?>"
+                                    value="<?php echo $title; ?>">
+                                <span class="invalid-feedback"><?php echo $title_err ?></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="short_description" class="form-label">Kısa Açıklama</label>
+                                <textarea name="short_description" id="short_description"
+                                    class="form-control <?php echo (!empty($short_description_err)) ? 'is-invalid' : '' ?>"><?php echo $short_description; ?></textarea>
+                                <span class="invalid-feedback"><?php echo $short_description_err ?></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="long_description" class="form-label">Uzun Açıklama</label>
+                                <textarea name="long_description" id="long_description"
+                                    class="form-control <?php echo (!empty($long_description_err)) ? 'is-invalid' : '' ?>"><?php echo $long_description; ?></textarea>
+                                <span class="invalid-feedback"><?php echo $long_description_err ?></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Konum</label>
+                                <input type="text" name="location" id="location"
+                                    class="form-control <?php echo (!empty($location_err)) ? 'is-invalid' : '' ?>"
+                                    value="<?php echo $location; ?>">
+                                <span class="invalid-feedback"><?php echo $location_err ?></span>
+                            </div>
 
 
-<div class="container my-3">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <form action="jobInsert.php" method="POST" enctype="multipart/form-data">
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Başlık</label>
-                            <input type="text" name="title" id="title"
-                                class="form-control <?php echo (!empty($title_err)) ? 'is-invalid' : '' ?>"
-                                value="<?php echo $title; ?>">
-                            <span class="invalid-feedback"><?php echo $title_err ?></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="short_description" class="form-label">Kısa Açıklama</label>
-                            <textarea name="short_description" id="short_description"
-                                class="form-control <?php echo (!empty($short_description_err)) ? 'is-invalid' : '' ?>"><?php echo $short_description; ?></textarea>
-                            <span class="invalid-feedback"><?php echo $short_description_err ?></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="long_description" class="form-label">Uzun Açıklama</label>
-                            <textarea name="long_description" id="long_description"
-                                class="form-control <?php echo (!empty($long_description_err)) ? 'is-invalid' : '' ?>"><?php echo $long_description; ?></textarea>
-                            <span class="invalid-feedback"><?php echo $long_description_err ?></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="location" class="form-label">Konum</label>
-                            <input type="text" name="location" id="location"
-                                class="form-control <?php echo (!empty($location_err)) ? 'is-invalid' : '' ?>"
-                                value="<?php echo $location; ?>">
-                            <span class="invalid-feedback"><?php echo $location_err ?></span>
-                        </div>
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label for="isActive" class="form-label">Aktif İlan</label>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <input type="checkbox" name="isActive" id="isActive"
+                                            class="form-check-input <?php echo (!empty($isActive_err)) ? 'is-invalid' : '' ?>"
+                                            value="1" <?php echo ($isActive == 1) ? 'checked' : ''; ?>>
+                                        <span class="invalid-feedback"><?php echo $isActive_err ?></span>
+                                    </div>
+                                </div>
 
 
-                        <div class="mb-3">
-                            <label for="last_modified_by" class="form-label">Son Değişiklik Tarihi </label>
-                            <input type="date" name="last_modified_on" id="last_modified_on"
-                                class="form-control <?php echo (!empty($last_modified_on_err)) ? 'is-invalid' : '' ?>"
-                                value="<?php echo $last_modified_on; ?>">
-                            <span class="invalid-feedback"><?php echo $last_modified_on_err ?></span>
-                        </div>
 
-                        <input type="submit" value="Kaydet" class="btn btn-primary">
-                    </form>
+                            </div>
+
+
+
+                            <input type="submit" value="Kaydet" class="btn btn-primary">
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</body>
+
+</html>

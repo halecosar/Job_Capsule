@@ -12,7 +12,7 @@ if (isset($_GET["q"]))
 if (isset($_GET["page"]) && is_numeric($_GET["page"]))
     $page = $_GET["page"];
 
-$result = getJobs($keyword, $page);
+$result = getAllJobs($keyword, $page);
 
 $total_jobs = $result["totalCount"];
 $data = $result["data"];

@@ -9,66 +9,22 @@ function Security($userData)
     return $userData;
 }
 
-
-
-// function createUser(string $name, string $username, string $email, string $password)
-// {
-//     $db = getData();
-
-//     array_push(
-//         $db["users"],
-//         array(
-//             "id" => count($db["users"]) + 1,
-//             "username" => $username,
-//             "password" => $password,
-//             "name" => $name,
-//             "email" => $email
-//         )
-//     );
-
-//     $myfile = fopen("db.json", "w");
-//     fwrite($myfile, json_encode($db, JSON_PRETTY_PRINT));
-//     fclose($myfile);
-
-// }
-
-// function getUser(string $username)
-// {
-//     $users = getData()["users"];
-
-//     foreach ($users as $user) {
-//         if ($user["username"] == $username) {
-//             return $user;
-//         }
-//     }
-//     return null;
-// }
-
-
-function createJob(string $title, string $short_description, string $long_description, string $location, int $isDeleted = 0, int $isActive = 0, $created_on = null, $created_by = "", $last_modified_on = null, $last_modified_by = "")
+function createJob(string $title, string $short_description, string $long_description, string $location, int $isDeleted = 0, int $isActive, $created_by = "", $last_modified_by = "")
 {
     include "config.php";
 
     $query = "INSERT INTO jobs (title, short_description, long_description, location, is_Deleted, isActive, created_on, created_by, last_modified_on, last_modified_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $result = mysqli_prepare($connection, $query);
 
-    // Eğer $created_on ve $last_modified_on değerleri null ise, varsayılan değerleri atayın
-    if ($created_on === null) {
-        $created_on = date("Y-m-d H:i:s");
-    }
-    if ($last_modified_on === null) {
-        $last_modified_on = date("Y-m-d H:i:s");
-    }
+    $created_on = date("Y-m-d H:i:s");
+    $last_modified_on = "";
+    $last_modified_by = "";
 
-    // Varsayılan değerler yerine parametrelerin değerlerini kullanın
     if (empty($created_by)) {
         $created_by = "admin";
     }
-    if (empty($last_modified_by)) {
-        $last_modified_by = "admin";
-    }
 
-    mysqli_stmt_bind_param($result, 'ssssiiisss', $title, $short_description, $long_description, $location, $isDeleted, $isActive, $created_on, $created_by, $last_modified_on, $last_modified_by);
+    mysqli_stmt_bind_param($result, 'ssssiissss', $title, $short_description, $long_description, $location, $isDeleted, $isActive, $created_on, $created_by, $last_modified_on, $last_modified_by);
     mysqli_stmt_execute($result);
     mysqli_stmt_close($result);
     mysqli_close($connection);
@@ -76,50 +32,41 @@ function createJob(string $title, string $short_description, string $long_descri
     return $result;
 }
 
-
-// function updateJob(int $job_id, string $title, string $short_description, string $long_description, string $location, int $isDeleted = 0, int $isActive = 0, $last_modified_on = null, $last_modified_by = "")
-// {
-//     include "config.php";
-
-//     $query = "UPDATE jobs SET title=?, short_description=?, long_description=?, location=?, isDeleted=?, isActive=?, last_modified_on=?, last_modified_by=? WHERE job_id=?";
-//     $result = mysqli_prepare($connection, $query);
-
-//     // Eğer $last_modified_on değeri null ise, varsayılan değeri atayın
-//     if ($last_modified_on === null) {
-//         $last_modified_on = date("Y-m-d H:i:s");
-//     }
-
-//     // Varsayılan değerler yerine parametrelerin değerlerini kullanın
-//     if (empty($last_modified_by)) {
-//         $last_modified_by = "admin";
-//     }
-
-//     mysqli_stmt_bind_param($result, 'ssssiiisi', $title, $short_description, $long_description, $location, $isDeleted, $isActive, $last_modified_on, $last_modified_by, $job_id);
-//     mysqli_stmt_execute($result);
-//     mysqli_stmt_close($result);
-//     mysqli_close($connection);
-
-//     return $result;
-// }
-
-
-// function getJobs()
-// {
-//     include "config.php";
-
-//     $query = "SELECT * FROM jobs WHERE is_deleted=0";
-//     $result = mysqli_query($connection, $query);
-//     $jobs = mysqli_fetch_all($result, MYSQLI_ASSOC);
-//     mysqli_close($connection);
-
-//     return $jobs;
-// }
-
 function getJobs($keyword, $page)
 {
     include "config.php";
 
-    $pageCount = 2;
+    $pageCount = 6;
+    $offset = ($page - 1) * $pageCount;
+    $query = "";
+
+    $query = "FROM jobs j WHERE j.is_deleted=0 && j.isActive=1";
+
+    if (!empty($keyword)) {
+        $query .= " && (j.title LIKE '%$keyword%' or j.short_description LIKE '%$keyword%' or j.location LIKE '%$keyword%')";
+    }
+
+    $total_sql = "SELECT COUNT(*) " . $query;
+
+    $count_data = mysqli_query($connection, $total_sql);
+    $count = mysqli_fetch_array($count_data)[0];
+    $total_pages = ceil($count / $pageCount); //kaç eleman çekildi kaç sayfa yapılacak. 
+
+    $sql = "SELECT * " . $query . " LIMIT $offset, $pageCount";
+    $result = mysqli_query($connection, $sql);
+    mysqli_close($connection);
+    return array(
+        "total_pages" => $total_pages,
+        "data" => $result,
+        "totalCount" => $count
+    );
+}
+
+function getAllJobs($keyword, $page)
+{
+    include "config.php";
+
+    $pageCount = 3;
     $offset = ($page - 1) * $pageCount;
     $query = "";
 
@@ -145,31 +92,26 @@ function getJobs($keyword, $page)
     );
 }
 
-function getJobsCount()
+function editJob(int $id, string $title, string $short_description, string $long_description, string $location, int $isActive)
 {
     include "config.php";
+    $last_modified_by = "admin";
 
-    $query = "SELECT COUNT(*) as job_count FROM jobs WHERE is_deleted=0";
-    $result = mysqli_query($connection, $query);
+    $query = "UPDATE jobs SET title=?, short_description=?, long_description=?, location=?, isActive=?, last_modified_on=NOW(), last_modified_by=? WHERE id=?";
 
-    $row = mysqli_fetch_assoc($result);
-    mysqli_close($connection);
+    $stmt = mysqli_prepare($connection, $query);
 
-    return $row['job_count'];
+    mysqli_stmt_bind_param($stmt, "ssssisi", $title, $short_description, $long_description, $location, $isActive, $last_modified_by, $id);
+
+    $result = mysqli_stmt_execute($stmt);
+
+    // Sorgu başarılı mı kontrolü
+    if ($result) {
+        return true;
+    } else {
+        return false;
+    }
 }
-
-function editJobs(int $id, string $title, string $description, string $image, string $url, int $isActive)
-{
-    include "config.php";
-
-    $query = "UPDATE blogs SET title='$title',description='$description',image='$image',url='$url',isActive='$isActive' WHERE id='$id'";
-    $result = mysqli_query($connection, $query);
-    echo mysqli_error($connection);
-    return $result;
-}
-
-
-
 
 function deleteJob(int $id)
 {
@@ -186,7 +128,7 @@ function deleteJob(int $id)
     return $result;
 }
 
-function getJobsByID(int $id)
+function getJobByID(int $id)
 {
     include "config.php";
     $query = "SELECT * from jobs WHERE id='$id'";
@@ -196,7 +138,5 @@ function getJobsByID(int $id)
     return $row;
 
 }
-
-
 
 ?>
