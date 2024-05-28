@@ -119,7 +119,7 @@ function getJobs($keyword, $page)
 {
     include "config.php";
 
-    $pageCount = 10;
+    $pageCount = 2;
     $offset = ($page - 1) * $pageCount;
     $query = "";
 
@@ -171,11 +171,18 @@ function editJobs(int $id, string $title, string $description, string $image, st
 
 
 
-function deleteJobs(int $id)
+function deleteJob(int $id)
 {
     include "config.php";
-    $query = "DELETE from blogs WHERE id=$id";
-    $result = mysqli_query($connection, $query);
+
+    $query = "UPDATE jobs SET is_deleted = 1 WHERE id = ?";
+    $stmt = mysqli_prepare($connection, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $id);
+
+    $result = mysqli_stmt_execute($stmt);
+
+    mysqli_close($connection);
+
     return $result;
 }
 
