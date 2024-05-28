@@ -45,20 +45,37 @@ function Security($userData)
 // }
 
 
-function createJob(string $title, string $description, string $image, string $url, int $category, int $isActive = 0)
+function createJob(string $title, string $short_description, string $long_description, string $location, int $isDeleted = 0, int $isActive = 0, $created_on = null, $created_by = "", $last_modified_on = null, $last_modified_by = "")
 {
     include "config.php";
 
-    $query = "INSERT INTO blogs(title,description,image,url,category_id,isActive) VALUES (?,?,?,?,?,?)";
+    $query = "INSERT INTO jobs (title, short_description, long_description, location, is_Deleted, isActive, created_on, created_by, last_modified_on, last_modified_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $result = mysqli_prepare($connection, $query);
 
-    mysqli_stmt_bind_param($result, 'ssssii', $title, $description, $image, $url, $category, $isActive);
+    // Eğer $created_on ve $last_modified_on değerleri null ise, varsayılan değerleri atayın
+    if ($created_on === null) {
+        $created_on = date("Y-m-d H:i:s");
+    }
+    if ($last_modified_on === null) {
+        $last_modified_on = date("Y-m-d H:i:s");
+    }
+
+    // Varsayılan değerler yerine parametrelerin değerlerini kullanın
+    if (empty($created_by)) {
+        $created_by = "admin";
+    }
+    if (empty($last_modified_by)) {
+        $last_modified_by = "admin";
+    }
+
+    mysqli_stmt_bind_param($result, 'ssssiiisss', $title, $short_description, $long_description, $location, $isDeleted, $isActive, $created_on, $created_by, $last_modified_on, $last_modified_by);
     mysqli_stmt_execute($result);
     mysqli_stmt_close($result);
     mysqli_close($connection);
 
     return $result;
 }
+
 
 
 // function getJobs()
