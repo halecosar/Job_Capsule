@@ -124,13 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <span class="invalid-feedback"><?php echo $location_err ?></span>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="last_modified_by" class="form-label">Son Değişikliği Yapan Kişi</label>
-                            <input type="text" name="last_modified_by" id="last_modified_by"
-                                class="form-control <?php echo (!empty($last_modified_by_err)) ? 'is-invalid' : '' ?>"
-                                value="<?php echo $last_modified_by; ?>">
-                            <span class="invalid-feedback"><?php echo $last_modified_by_err ?></span>
-                        </div>
+
                         <div class="mb-3">
                             <label for="last_modified_by" class="form-label">Son Değişiklik Tarihi </label>
                             <input type="date" name="last_modified_on" id="last_modified_on"

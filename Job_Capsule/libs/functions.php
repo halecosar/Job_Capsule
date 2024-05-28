@@ -77,6 +77,31 @@ function createJob(string $title, string $short_description, string $long_descri
 }
 
 
+// function updateJob(int $job_id, string $title, string $short_description, string $long_description, string $location, int $isDeleted = 0, int $isActive = 0, $last_modified_on = null, $last_modified_by = "")
+// {
+//     include "config.php";
+
+//     $query = "UPDATE jobs SET title=?, short_description=?, long_description=?, location=?, isDeleted=?, isActive=?, last_modified_on=?, last_modified_by=? WHERE job_id=?";
+//     $result = mysqli_prepare($connection, $query);
+
+//     // Eğer $last_modified_on değeri null ise, varsayılan değeri atayın
+//     if ($last_modified_on === null) {
+//         $last_modified_on = date("Y-m-d H:i:s");
+//     }
+
+//     // Varsayılan değerler yerine parametrelerin değerlerini kullanın
+//     if (empty($last_modified_by)) {
+//         $last_modified_by = "admin";
+//     }
+
+//     mysqli_stmt_bind_param($result, 'ssssiiisi', $title, $short_description, $long_description, $location, $isDeleted, $isActive, $last_modified_on, $last_modified_by, $job_id);
+//     mysqli_stmt_execute($result);
+//     mysqli_stmt_close($result);
+//     mysqli_close($connection);
+
+//     return $result;
+// }
+
 
 // function getJobs()
 // {
@@ -94,7 +119,7 @@ function getJobs($keyword, $page)
 {
     include "config.php";
 
-    $pageCount = 1;
+    $pageCount = 10;
     $offset = ($page - 1) * $pageCount;
     $query = "";
 
