@@ -14,7 +14,14 @@
 <body>
     <div class="container mt-5">
         <div class="row">
-            <h1> Hoşgeldin Admin</h1>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title"></h2>
+                        <img src="../../img/admin-homepage.png" class="img-fluid" alt="Admin Homepage">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

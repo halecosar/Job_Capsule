@@ -23,7 +23,7 @@
 <body>
 
     <?php
-    require "Job_Capsule/libs/functions.php"; ?>
+    require "../libs/functions.php"; ?>
 
     <?php $userName = $password = $userNameError = $passwordError = ""; ?>
 

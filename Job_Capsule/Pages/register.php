@@ -17,142 +17,187 @@
         .bg-custom {
             background-color: transparent;
         }
+
+        .form-container {
+            max-width: 500px;
+            margin: auto;
+        }
     </style>
 </head>
 
 <body>
 
     <?php
-    require "functions.php"; ?>
+    include_once "../libs/functions.php"; ?>
+    <?php include "../libs/config.php" ?>
 
-    <?php $fullname = $password = $password2 = $email = $userNameError = $passwordError = ""; ?>
+    <?php $fullname = $mail = $password = $passwordConfirm = $phone = $fullnameErr = $mailErr = $passwordErr = $passwordConfirmErr = $phoneErr = ""; ?>
 
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-
-        if (empty($_POST["fullname"])) {
-            $name = "Bu alanı boş bırakamazsınız";
-
-        } else if (empty($_POST["password"])) {
-            $passwordError = "Bu alanı boş bırakamazsınız";
-        } else if (!preg_match("/^[a-zA-Z-']*$/", Security($_POST["fullname"]))) {
-            $userNameError = "Geçersiz karakter girildi.";
+        if (empty(trim($_POST["fullname"]))) {
+            $fullnameErr = "ad-soyad girmelisiniz";
+        } else if (strlen(trim($_POST["fullname"])) < 5 or strlen(trim($_POST["fullname"])) > 15) {
+            $fullnameErr = "Ad-Soyad 5-15 karakter arasında olmalıdır.";
+        } else if (!preg_match('/^[a-zA-Z ]*$/', $_POST["fullname"])) {
+            $fullnameErr = "Ad-Soyad sadece harflerden oluşmalıdır.";
         } else {
-            // Başarılı kayıt işlemi
-            echo "Başarılı kayıt işlemi";
-            $userName = Security($_POST["fullname"]);
-            $password = Security($_POST["password"]);
-            $password2 = Security($_POST["password2"]);
-            $password = Security($_POST["email"]);
+            $fullname = $_POST["fullname"];
+        }
+
+        if (empty(trim($_POST["mail"]))) {
+            $mailErr = "mail girmelisiniz";
+        } else {
+            $sql = "select id FROM users where mail = ?";
+
+            if ($stmt = mysqli_prepare($connection, $sql)) {
+                $param_email = trim($_POST["mail"]);
+                mysqli_stmt_bind_param($stmt, "s", $param_email);
+
+                if (mysqli_stmt_execute($stmt)) {
+                    mysqli_stmt_store_result($stmt);
+
+                    if (mysqli_stmt_num_rows($stmt) == 1) {
+                        $mailErr = "mail daha önce kullanılmıştır.";
+                    } else {
+                        $mail = $_POST["mail"];
+                    }
+                } else {
+                    echo mysqli_error($connection);
+                    echo "hata oluştu";
+                }
+            }
+        }
+
+        if (empty(trim($_POST["phone"]))) {
+            $phoneErr = "telefon numarası girmelisiniz";
+        } else if (strlen($_POST["phone"]) < 10 || strlen($_POST["phone"]) > 10) {
+            $phoneErr = "telefon numarasını başında 0 olmadan 10 haneli giriniz.";
+        } else if (!preg_match('/^[0-9]*$/', $_POST["phone"])) {
+            $phoneErr = "telefon numarası sadece rakamlardan oluşmalıdır.";
+        } else {
+            $phone = $_POST["phone"];
+        }
+
+
+        if (empty(trim($_POST["password"]))) {
+            $passwordErr = "şifre girmelisiniz";
+        } else if (strlen($_POST["password"]) < 6) {
+            $passwordErr = "şifre min. 6 karakterden oluşturulmalıdır.";
+        } else {
+            $password = $_POST["password"];
+        }
+        if (empty(trim($_POST["passwordConfirm"]))) {
+            $passwordConfirmErr = "şifre tekrarı girmelisiniz";
+        } else {
+            $passwordConfirm = $_POST["passwordConfirm"];
+            if (empty($passwordErr) && ($password != $passwordConfirm)) {
+                $passwordConfirmErr = "parolalar eşleşmiyor.";
+            }
+        }
+
+
+        if (empty($fullnameErr) && empty($mailErr) && empty($phoneErr) && empty($passwordErr) && empty($passwordConfirmErr)) {
+            $sql = "INSERT INTO users (fullname,mail,phone,password) VALUES (?,?,?,?)";
+
+            if ($stmt = mysqli_prepare($connection, $sql)) {
+                $param_fullname = $fullname;
+                $param_mail = $mail;
+                $param_phone = $phone;
+                $param_password = password_hash($password, PASSWORD_DEFAULT);
+
+                mysqli_stmt_bind_param($stmt, "ssss", $param_fullname, $param_mail, $param_phone, $param_password);
+
+                if (mysqli_stmt_execute($stmt)) {
+                    header("location: login.php");
+                } else {
+                    echo mysqli_error($connection);
+                    echo "hata oluştu";
+                }
+            }
         }
     }
     ?>
 
     <section class="vh-100 gradient-custom">
-        <div class="container py-5 h-100 " style="width= 400px">
+        <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                     <div class="card bg-custom text-white" style="border-radius: 1rem;">
                         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post"
-                            class="card-body p-4 text-center">
+                            class="card-body p-4 text-center form-container">
                             <div>
-                                <h2 class="fw-bold mb- text-uppercase">KAYIT OL</h2>
+                                <h2 class="fw-bold mb-2 text-uppercase">KAYIT OL</h2>
                                 <p class="text-white-50 mb-4"></p>
                             </div>
                             <div class="row">
-                                <div class="col-sm-12 col-md-6">
+                                <div class="col-12">
                                     <div data-mdb-input-init class="form-outline form-white mb-3">
-                                        <label class="form-label" for="fullname">Kullanıcı Adı</label>
+                                        <label class="form-label" for="fullname">Ad-Soyad</label>
                                         <input type="text" id="typefullname" name="fullname"
-                                            class="form-control form-control-lg"
+                                            class="form-control form-control-sm <?php echo (!empty($fullnameErr)) ? 'is-invalid' : '' ?>"
                                             value="<?php echo htmlspecialchars($fullname); ?>" />
-
-                                        <small class="form-text text-muted" style="color:white"> *Bu alan
-                                            zorunludur.</small>
-                                        <small class="error"><?php echo $userNameError; ?></small>
+                                        <span class="invalid-feedback"><?php echo $fullnameErr ?></span>
                                     </div>
                                 </div>
-                                <div class="col">
+                                <div class="col-12">
+                                    <div data-mdb-input-init class="form-outline form-white mb-3">
+                                        <label class="form-label" for="mail">Mail Adresi</label>
+                                        <input type="email" id="typemail" name="mail"
+                                            class="form-control form-control-sm <?php echo (!empty($mailErr)) ? 'is-invalid' : '' ?>"
+                                            value="<?php echo htmlspecialchars($mail); ?>" />
+                                        <span class="invalid-feedback"><?php echo $mailErr ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div data-mdb-input-init class="form-outline form-white mb-3">
+                                        <label class="form-label" for="phone">Telefon</label>
+                                        <input type="text" id="typephone" name="phone"
+                                            class="form-control form-control-sm <?php echo (!empty($phoneErr)) ? 'is-invalid' : '' ?>"
+                                            value="<?php echo htmlspecialchars($phone); ?>" />
+                                        <span class="invalid-feedback"><?php echo $phoneErr ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
                                     <div data-mdb-input-init class="form-outline form-white mb-3">
                                         <label class="form-label" for="typePasswordX">Şifre</label>
                                         <input type="password" id="typePasswordX" name="password"
-                                            class="form-control form-control-lg" />
-                                        <small class="form-text text-muted" style="color:white"> *Bu alan
-                                            zorunludur.</small>
-                                        <small class="error"><?php
-                                        echo $passwordError; ?></small>
+                                            class="form-control form-control-sm <?php echo (!empty($passwordErr)) ? 'is-invalid' : '' ?>" />
+
+                                        <span class="invalid-feedback"><?php echo $passwordErr ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div data-mdb-input-init class="form-outline form-white mb-3">
+                                        <label class="form-label" for="typePasswordXConfirm">Şifre Tekrar</label>
+                                        <input type="password" id="typePasswordXConfirm" name="passwordConfirm"
+                                            class="form-control form-control-sm <?php echo (!empty($passwordConfirmErr)) ? 'is-invalid' : '' ?>" />
+
+                                        <span class="invalid-feedback"><?php echo $passwordConfirmErr ?></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col">
-                                    <div data-mdb-input-init class="form-outline form-white mb-3">
-                                        <label class="form-label" for="typePasswordX">Şifre Tekrar</label>
-                                        <input type="password" id="typePasswordX" name="password2"
-                                            class="form-control form-control-lg" />
-                                        <small class="form-text text-muted" style="color:white"> *Bu alan
-                                            zorunludur.</small>
-                                        <small class="error"><?php
-                                        echo $passwordError; ?></small>
-                                    </div>
-                                </div>
-
-                                <div class="col">
-                                    <div data-mdb-input-init class="form-outline form-white mb-3">
-                                        <label class="form-label" for="email">E-mail</label>
-                                        <input type="email" id="typeemail" name="email"
-                                            class="form-control form-control-lg"
-                                            value="<?php echo htmlspecialchars($email); ?>" />
-
-                                        <small class="form-text text-muted" style="color:white"> *Bu alan
-                                            zorunludur.</small>
-                                        <small class="error"><?php echo $userNameError; ?></small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div data-mdb-input-init class="form-outline form-white mb-3">
-                                        <label class="form-label" for="tel">Cep No</label>
-                                        <input type="tel" value="+90" id="typetel" name="tel"
-                                            class="form-control form-control-lg" />
-
-                                        <small class="form-text text-muted" style="color:white"> *Bu alan
-                                            zorunludur.</small>
-                                        <small class="error"><?php echo $userNameError; ?></small>
-                                    </div>
-                                </div>
-                                <div class="col">
+                                <div class="col-12">
                                     <div data-mdb-input-init class="form-outline form-white mb-3">
                                         <label class="form-label" for="file">CV Yükle</label>
                                         <input type="file" id="typefile" name="file"
-                                            class="form-control form-control-lg" />
+                                            class="form-control form-control-sm" />
 
-                                        <small class="form-text text-muted" style="color:white"> *Bu alan
-                                            zorunludur.</small>
-                                        <small class="error"><?php echo $userNameError; ?></small>
+                                        <!-- <small class="error"><?php echo $userNameError; ?></small> -->
                                     </div>
                                 </div>
                             </div>
 
                             <div>
-
                                 <button data-mdb-button-init data-mdb-ripple-init
                                     class="btn btn-outline-light btn-lg px-5" type="submit">Kayıt Ol</button>
                             </div>
+                        </form>
                     </div>
-
-
-
-                    <div class="d-flex justify-content-center text-center mt-3 pt-1">
-                        <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
-                        <a href="#!" class="text-white"><i class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
-                        <a href="#!" class="text-white"><i class="fab fa-google fa-lg"></i></a>
-                    </div>
-                    </form>
                 </div>
             </div>
-        </div>
         </div>
     </section>
 </body>
