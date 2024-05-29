@@ -30,6 +30,7 @@
     <?php
     include_once "../libs/functions.php"; ?>
     <?php include "../libs/config.php" ?>
+    <?php session_start(); ?>
 
     <?php $fullname = $mail = $password = $passwordConfirm = $phone = $fullnameErr = $mailErr = $passwordErr = $passwordConfirmErr = $phoneErr = ""; ?>
 
@@ -108,7 +109,9 @@
                 mysqli_stmt_bind_param($stmt, "ssss", $param_fullname, $param_mail, $param_phone, $param_password);
 
                 if (mysqli_stmt_execute($stmt)) {
-                    header("location: login.php");
+                    // header("location: login.php");
+                    $_SESSION['register_message'] = "Üyelik işleminiz başarıyla gerçekleşmiştir.";
+                    $_SESSION['register_type'] = "success";
                 } else {
                     echo mysqli_error($connection);
                     echo "hata oluştu";
@@ -123,6 +126,15 @@
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                     <div class="card bg-custom text-white" style="border-radius: 1rem;">
+
+                        <?php if (isset($_SESSION['register_message'])): ?>
+                            <div class="alert alert-<?php echo $_SESSION['register_type']; ?>">
+                                <?php
+                                echo $_SESSION['register_message'];
+                                ?>
+                            </div>
+                        <?php endif; ?>
+
                         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post"
                             class="card-body p-4 text-center form-container">
                             <div>
@@ -193,6 +205,14 @@
                             <div>
                                 <button data-mdb-button-init data-mdb-ripple-init
                                     class="btn btn-outline-light btn-lg px-5" type="submit">Kayıt Ol</button>
+
+                                <?php if (isset($_SESSION['register_message'])): ?>
+                                    <a href="login.php" class="btn btn-primary btn-large float-right mb-2">Giriş Yap</a>
+                                    <?php
+                                    unset($_SESSION['register_message']);
+                                    unset($_SESSION['register_type']);
+                                    ?>
+                                <?php endif; ?>
                             </div>
                         </form>
                     </div>

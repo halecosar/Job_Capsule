@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,45 +14,55 @@
 </head>
 
 <body>
-    <!-- Navbar -->
+
     <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
-        <!-- Container wrapper -->
+
         <div class="container">
-            <!-- Navbar brand -->
+
             <a class="navbar-brand me-2" href="https://mdbgo.com/">
 
             </a>
 
-            <!-- Toggle button -->
+
             <button data-mdb-collapse-init class="navbar-toggler" type="button" data-mdb-target="#navbarButtonsExample"
                 aria-controls="navbarButtonsExample" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
 
-            <!-- Collapsible wrapper -->
-            <div class="collapse navbar-collapse" id="navbarButtonsExample">
-                <!-- Left links -->
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
+            <div class="collapse navbar-collapse" id="navbarButtonsExample">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="admin-homepage.php">Anasayfa</a>
-
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="JobList.php">İlanlar</a>
-
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" style="color:blue; font-weight:dark; text-align:right;">
+                            <?php echo "Hoşgeldiniz " . $_SESSION['mail']; ?>
+                        </a>
                     </li>
 
-
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary nav-link" href="logout.php">Logout</a>
+                    </li>
                 </ul>
-                <!-- Left links -->
 
 
-                <!-- Collapsible wrapper -->
+
+
             </div>
-            <!-- Container wrapper -->
+
     </nav>
-    <!-- Navbar -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+9hlBX7EjPbbQK8CVf1KnvM6W4w1I"
+        crossorigin="anonymous"></script>
+
 </body>
 
 </html>

@@ -21,27 +21,68 @@
 </head>
 
 <body>
-
     <?php
-    require "../libs/functions.php"; ?>
+    include_once "../libs/functions.php"; ?>
+    <?php include "../libs/config.php" ?>
+    <?php session_start(); ?>
 
-    <?php $userName = $password = $userNameError = $passwordError = ""; ?>
+    <?php $mail = $password = $mailError = $passwordError = ""; ?>
 
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
-        if (empty($_POST["userName"])) {
-            $userNameError = "Bu alanı boş bırakamazsınız";
+        if (empty($_POST["mail"])) {
+            $mailError = "Mail alanını boş bırakamazsınız";
 
         } else if (empty($_POST["password"])) {
-            $passwordError = "Bu alanı boş bırakamazsınız";
-        } else if (!preg_match("/^[a-zA-Z-']*$/", Security($_POST["userName"]))) {
-            $userNameError = "Geçersiz karakter girildi.";
+            $passwordError = "Şifre alanını boş bırakamazsınız";
         } else {
-            // Başarılı giriş işlemi
-            echo "Başarılı giriş işlemi";
-            $userName = Security($_POST["userName"]);
+            // // Başarılı giriş işlemi
+            // echo "Başarılı giriş işlemi";
+            $mail = Security($_POST["mail"]);
             $password = Security($_POST["password"]);
+
+            if (empty($mailError) && empty($passwordError)) {
+                $sql = "SELECT id, mail, password, role FROM users where mail = ?";
+
+                if ($stmt = mysqli_prepare($connection, $sql)) {
+                    $param_mail = $mail;
+                    mysqli_stmt_bind_param($stmt, "s", $param_mail);
+
+                    if (mysqli_stmt_execute($stmt)) {
+                        mysqli_stmt_store_result($stmt);
+                        if (mysqli_stmt_num_rows($stmt) == 1) {
+                            mysqli_stmt_bind_result($stmt, $id, $mail, $hashed_password, $role);
+
+                            if (mysqli_stmt_fetch($stmt)) {
+                                if (password_verify($password, $hashed_password)) {
+                                    $_SESSION["loggedin"] = true;
+                                    $_SESSION["id"] = $id;
+                                    $_SESSION["mail"] = $mail;
+                                    $_SESSION["role"] = $role;
+
+                                    if ($role == 0) {
+                                        echo "user ekranları yapılınca yönlendirilecek";
+                                    } else if ($role == 1) {
+                                        header("location: ../Components/Admin-Operations/admin-homepage.php");
+                                    } else {
+                                        echo "kullanıcı rolü bulunamadı";
+                                    }
+
+                                } else {
+                                    $login_err = "Hatalı veya eksik bilgi girdiniz.";
+                                }
+                            }
+                        } else {
+                            $login_err = "Hatalı veya eksik bilgi girdiniz.";
+                        }
+                    } else {
+                        echo "bilinmeyen bir hata oluştu";
+                    }
+                    mysqli_stmt_close($stmt);
+                }
+            }
+            mysqli_close($connection);
         }
     }
     ?>
@@ -56,33 +97,26 @@
                             style="height: 70vh; display: flex; flex-direction: column; justify-content: space-between;">
                             <div>
                                 <h2 class="fw-bold mb-2 text-uppercase">GİRİŞ YAP</h2>
-                                <p class="text-white-50 mb-4">E-posta adresinizi ve şifrenizi giriniz.</p>
                             </div>
                             <div>
                                 <div data-mdb-input-init class="form-outline form-navy mb-3">
-                                    <label class="form-label" for="typeuserName">Kullanıcı Adı</label>
-                                    <input type="text" id="typeuserName" name="userName"
-                                        class="form-control form-control-lg"
-                                        value="<?php echo htmlspecialchars($userName); ?>" />
-
-                                    <small class="form-text text-muted" style="color:white"> *Bu alan
-                                        zorunludur.</small>
-                                    <small class="error"><?php echo $userNameError; ?></small>
+                                    <label class="form-label" for="typeuserName">E-Mail</label>
+                                    <input type="email" id="typeuserName" name="mail"
+                                        class="form-control form-control-lg <?php echo (!empty($mailError)) ? 'is-invalid' : '' ?>"
+                                        value="<?php echo htmlspecialchars($mail); ?>" />
+                                    <span class="invalid-feedback"><?php echo $mailError ?></span>
                                 </div>
 
                                 <div data-mdb-input-init class="form-outline form-white mb-3">
                                     <label class="form-label" for="typePasswordX">Şifre</label>
                                     <input type="password" id="typePasswordX" name="password"
-                                        class="form-control form-control-lg" />
-                                    <small class="form-text text-muted" style="color:white"> *Bu alan
-                                        zorunludur.</small>
-                                    <small class="error"><?php
-                                    echo $passwordError; ?></small>
+                                        class="form-control form-control-lg <?php echo (!empty($passwordError)) ? 'is-invalid' : '' ?>"
+                                        value="<?php echo htmlspecialchars($password); ?>" />
+                                    <span class="invalid-feedback"><?php echo $passwordError ?></span>
                                 </div>
                             </div>
 
                             <div>
-                                <p class="small mb-3 pb-lg-2"><a class="text-white-50" href="#!">Şifremi Unuttum</a></p>
                                 <button data-mdb-button-init data-mdb-ripple-init
                                     class="btn btn-outline-light btn-lg px-5" type="submit">Giriş Yap</button>
                             </div>
