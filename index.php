@@ -14,5 +14,5 @@
 
 </html>
 
-<?php include "Job_Capsule/Pages/login.php"
-    ?>
+<?php header("location: Job_Capsule/Components/home.php");
+?>

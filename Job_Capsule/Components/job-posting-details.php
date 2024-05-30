@@ -4,6 +4,21 @@ include_once "../libs/functions.php";
 $jobDetails = getJobByID($_GET["id"]);
 ?>
 
+<?php
+
+$loggedIn = isset($_SESSION["loggedin"]) && $_SESSION["loggedin"];
+
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (!$loggedIn) {
+        header('Location: ../Pages/login.php');
+    } else {
+        echo "başvuru alındı";
+    }
+
+} ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,8 +49,11 @@ $jobDetails = getJobByID($_GET["id"]);
                         <p class="card-text"><?= htmlspecialchars($jobDetails['location']) ?></p>
                         <p> Date Posted </p>
                         <h5 class="card-text"> <?= htmlspecialchars($jobDetails['created_on']) ?></h5>
-                        <a href="job-posting-details.php?id=<?php echo $jobDetails['id'] ?>"
-                            class="btn btn-primary btn-large align-self-start">İlana Başvur</a>
+                        <form method="POST">
+                            <button class="btn btn-primary btn-large align-self-start" type="submit">İlana
+                                Başvur</button>
+                        </form>
+
 
 
                     </div>
