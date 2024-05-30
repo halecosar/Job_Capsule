@@ -1,3 +1,8 @@
+<?php
+session_start();
+$loggedIn = isset($_SESSION["loggedin"]) && $_SESSION["loggedin"];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,10 +56,29 @@
                         <a class="nav-link" href="#">İletişim</a>
                     </li>
                 </ul>
-                <div class="d-flex align-items-center">
-                    <a class="btn btn-outline-primary nav-link" href="../Pages/login.php"> Giriş Yap</a>
-                    <a class="btn btn-outline-primary nav-link" href="../Pages/register.php">Kayıt Ol</a>
-                </div>
+
+
+
+                <?php if (!$loggedIn): ?>
+                    <div class="d-flex align-items-center">
+                        <a class="btn btn-outline-primary nav-link" href="../Pages/login.php"> Giriş Yap</a>
+                        <a class="btn btn-outline-primary nav-link" href="../Pages/register.php">Kayıt Ol</a>
+                    </div>
+                <?php else: ?>
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" style="color:blue; font-weight:dark; text-align:right;">
+                                <?php echo "Hoşgeldiniz " . htmlspecialchars($_SESSION['mail']); ?>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-primary nav-link" href="../Pages/logout.php">Logout</a>
+                        </li>
+                    </ul>
+                <?php endif; ?>
+
+
+
             </div>
         </div>
     </nav>

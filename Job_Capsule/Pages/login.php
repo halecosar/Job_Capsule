@@ -62,7 +62,7 @@
                                     $_SESSION["role"] = $role;
 
                                     if ($role == 0) {
-                                        echo "user ekranları yapılınca yönlendirilecek";
+                                        header("location: ../Components/home.php");
                                     } else if ($role == 1) {
                                         header("location: ../Components/Admin-Operations/admin-homepage.php");
                                     } else {
@@ -118,8 +118,10 @@
 
                             <div>
                                 <button data-mdb-button-init data-mdb-ripple-init
-                                    class="btn btn-outline-light btn-lg px-5" type="submit">Giriş Yap</button>
+                                    class="btn btn-outline-light btn-lg px-5" type="submit">Giriş Yap</button> <br> <br>
+                                <a href="register.php" class="btn btn-outline-light btn-lg px-5">Hesap Oluştur</a>
                             </div>
+
 
                             <div class="d-flex justify-content-center text-center mt-3 pt-1">
                                 <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
