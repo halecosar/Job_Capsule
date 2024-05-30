@@ -1,8 +1,10 @@
 <?php
-
+if (empty($_SESSION["loggedin"])) {
+    header("Location: ../../Pages/login.php");
+}
 // require "libs/vars.php";
 require "../../libs/functions.php";
-session_start();
+// session_start();
 $id = intval($_GET['id']);
 
 if (deleteJob($id)) {

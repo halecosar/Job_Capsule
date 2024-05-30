@@ -1,7 +1,10 @@
 <?php
-include "navbar.php";
-include_once "../libs/functions.php";
 
+include_once "../libs/functions.php"; ?>
+<?php
+require "navbar.php";
+?>
+<?php
 $keyword = "";
 $page = 1;
 

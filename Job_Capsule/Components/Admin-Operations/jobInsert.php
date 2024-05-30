@@ -3,6 +3,9 @@ require "../../libs/functions.php";
 include "admin-nav.php";
 session_start();
 
+if (empty($_SESSION["loggedin"])) {
+    header("Location: ../../Pages/login.php");
+}
 // Değişkenlerin tanımlanması ve başlangıç değerleri
 $title = $short_description = $long_description = $location = $isActive = "";
 $title_err = $short_description_err = $long_description_err = $location_err = $isActive_err = "";

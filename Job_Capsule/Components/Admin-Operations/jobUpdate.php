@@ -1,7 +1,11 @@
 <?php
 require "../../libs/functions.php";
 include "admin-nav.php";
-session_start();
+// session_start();
+
+if (empty($_SESSION["loggedin"])) {
+    header("Location: ../../Pages/login.php");
+}
 
 // Değişkenlerin tanımlanması ve başlangıç değerleri
 $title = $short_description = $long_description = $location = $isActive = "";

@@ -1,4 +1,13 @@
-<?php include "admin-nav.php"; ?>
+<?php include "admin-nav.php";
+
+
+
+if (empty($_SESSION["loggedin"])) {
+    header("Location: ../../Pages/login.php");
+}
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">

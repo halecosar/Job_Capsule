@@ -1,5 +1,9 @@
 <?php
 session_start();
+
+if (empty($_SESSION["loggedin"])) {
+    header("Location: ../../Pages/login.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +52,7 @@ session_start();
                     </li>
 
                     <li class="nav-item">
-                        <a class="btn btn-outline-primary nav-link" href="logout.php">Logout</a>
+                        <a class="btn btn-outline-primary nav-link" href="../../Pages/logout.php">Logout</a>
                     </li>
                 </ul>
 

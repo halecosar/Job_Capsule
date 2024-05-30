@@ -3,7 +3,7 @@ include "navbar.php";
 include_once "../libs/functions.php";
 
 
-$jobDetails = getJobsByID($_GET["id"]);
+$jobDetails = getJobByID($_GET["id"]);
 
 
 ?>
