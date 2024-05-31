@@ -43,18 +43,38 @@ $loggedIn = isset($_SESSION["loggedin"]) && $_SESSION["loggedin"];
             </button>
             <div class="collapse navbar-collapse" id="navbarsButtonsExample">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="Home.php">Anasayfa</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about-us.php">Hakkımızda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="job-posting.php">İş İlanları</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">İletişim</a>
-                    </li>
+                    <?php if (isset($_SESSION["loggedin"])): ?>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="Home.php">Anasayfa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="my-applications.php">Başvurularım</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="job-posting.php">İş İlanları</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="profile.php">Profilim</a>
+                        </li>
+
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="Home.php">Anasayfa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about-us.php">Hakkımızda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="job-posting.php">İş İlanları</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">İletişim</a>
+                        </li>
+
+
+                    <?php endif; ?>
+
                 </ul>
 
 

@@ -140,26 +140,7 @@ function getJobByID(int $id)
 }
 
 
-// function ApplicationAdd($user_id, $job_id, $status)
-// {
-//     include "config.php";
 
-
-//     if (empty($status)) {
-//         $status = 1;
-//     }
-
-//     $query = "INSERT INTO application (user_id, job_id, status) VALUES ( ?, ?, ?)";
-//     $result = mysqli_prepare($connection, $query);
-
-
-//     mysqli_stmt_bind_param($result, 'iii', $user_id, $job_id, $status);
-//     mysqli_stmt_execute($result);
-//     mysqli_stmt_close($result);
-//     mysqli_close($connection);
-
-//     return $result;
-// }
 
 
 
@@ -193,6 +174,57 @@ function ApplicationAdd($user_id, $job_id, $status)
     return $success;
 }
 
+
+function getAllApplications($user_id, $keyword, $page)
+{
+    include "config.php";
+
+    $pageCount = 3;
+    $offset = ($page - 1) * $pageCount;
+
+    // Temel sorgu
+    $query = "FROM application WHERE user_id=?";
+    $params = [$user_id];
+    $types = "i";
+
+    // Anahtar kelime eklenirse
+    if (!empty($keyword)) {
+        $query .= " AND (application.title LIKE ?)";
+        $params[] = "%$keyword%";
+        $types .= "s";
+    }
+
+    // Toplam kayıt sayısını hesaplama
+    $total_sql = "SELECT COUNT(*) " . $query;
+    $stmt = mysqli_prepare($connection, $total_sql);
+    mysqli_stmt_bind_param($stmt, $types, ...$params);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $count);
+    mysqli_stmt_fetch($stmt);
+    mysqli_stmt_close($stmt);
+
+    $total_pages = ceil($count / $pageCount);
+
+    // Verileri getirme
+    $sql = "SELECT * " . $query . " LIMIT ?, ?";
+    $stmt = mysqli_prepare($connection, $sql);
+    $params[] = $offset;
+    $params[] = $pageCount;
+    $types .= "ii";
+    mysqli_stmt_bind_param($stmt, $types, ...$params);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $applications = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_stmt_close($stmt);
+
+    mysqli_close($connection);
+
+    return array(
+        "total_pages" => $total_pages,
+        "data" => $applications,
+        "totalCount" => $count
+    );
+}
 
 
 
