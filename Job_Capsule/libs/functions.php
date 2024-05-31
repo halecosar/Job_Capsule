@@ -36,7 +36,7 @@ function getJobs($keyword, $page)
 {
     include "config.php";
 
-    $pageCount = 6;
+    $pageCount = 3;
     $offset = ($page - 1) * $pageCount;
     $query = "";
 
@@ -138,5 +138,62 @@ function getJobByID(int $id)
     return $row;
 
 }
+
+
+// function ApplicationAdd($user_id, $job_id, $status)
+// {
+//     include "config.php";
+
+
+//     if (empty($status)) {
+//         $status = 1;
+//     }
+
+//     $query = "INSERT INTO application (user_id, job_id, status) VALUES ( ?, ?, ?)";
+//     $result = mysqli_prepare($connection, $query);
+
+
+//     mysqli_stmt_bind_param($result, 'iii', $user_id, $job_id, $status);
+//     mysqli_stmt_execute($result);
+//     mysqli_stmt_close($result);
+//     mysqli_close($connection);
+
+//     return $result;
+// }
+
+
+
+function ApplicationAdd($user_id, $job_id, $status)
+{
+    include "config.php";
+
+    if (empty($status)) {
+        $status = 1;
+    }
+
+    $query = "INSERT INTO application (user_id, job_id, status) VALUES (?, ?, ?)";
+    $stmt = mysqli_prepare($connection, $query);
+
+    if ($stmt === false) {
+        die('MySQL prepare failed: ' . mysqli_error($connection));
+    }
+
+    mysqli_stmt_bind_param($stmt, 'iii', $user_id, $job_id, $status);
+    mysqli_stmt_execute($stmt);
+
+    if (mysqli_stmt_affected_rows($stmt) > 0) {
+        $success = true;
+    } else {
+        $success = false;
+    }
+
+    mysqli_stmt_close($stmt);
+    mysqli_close($connection);
+
+    return $success;
+}
+
+
+
 
 ?>

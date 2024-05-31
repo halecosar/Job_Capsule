@@ -57,7 +57,7 @@
                             if (mysqli_stmt_fetch($stmt)) {
                                 if (password_verify($password, $hashed_password)) {
                                     $_SESSION["loggedin"] = true;
-                                    $_SESSION["id"] = $id;
+                                    $_SESSION["userId"] = $id;
                                     $_SESSION["mail"] = $mail;
                                     $_SESSION["role"] = $role;
 
