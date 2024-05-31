@@ -174,54 +174,32 @@ function ApplicationAdd($user_id, $job_id, $status)
     return $success;
 }
 
-
 function getAllApplications($user_id, $keyword, $page)
 {
     include "config.php";
 
-    $pageCount = 3;
+    $pageCount = 1;
     $offset = ($page - 1) * $pageCount;
+    $query = "";
 
-    // Temel sorgu
-    $query = "FROM application WHERE user_id=?";
-    $params = [$user_id];
-    $types = "i";
+    $query = "FROM application a INNER JOIN jobs j ON j.id = a.job_id WHERE user_id=$user_id";
 
-    // Anahtar kelime eklenirse
     if (!empty($keyword)) {
-        $query .= " AND (application.title LIKE ?)";
-        $params[] = "%$keyword%";
-        $types .= "s";
+        $query .= " && (j.title LIKE '%$keyword%' or j.short_description LIKE '%$keyword%' or j.location LIKE '%$keyword%')";
     }
 
-    // Toplam kayıt sayısını hesaplama
     $total_sql = "SELECT COUNT(*) " . $query;
-    $stmt = mysqli_prepare($connection, $total_sql);
-    mysqli_stmt_bind_param($stmt, $types, ...$params);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_bind_result($stmt, $count);
-    mysqli_stmt_fetch($stmt);
-    mysqli_stmt_close($stmt);
 
-    $total_pages = ceil($count / $pageCount);
+    $count_data = mysqli_query($connection, $total_sql);
+    $count = mysqli_fetch_array($count_data)[0];
+    $total_pages = ceil($count / $pageCount); //kaç eleman çekildi kaç sayfa yapılacak. 
 
-    // Verileri getirme
-    $sql = "SELECT * " . $query . " LIMIT ?, ?";
-    $stmt = mysqli_prepare($connection, $sql);
-    $params[] = $offset;
-    $params[] = $pageCount;
-    $types .= "ii";
-    mysqli_stmt_bind_param($stmt, $types, ...$params);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $applications = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    mysqli_stmt_close($stmt);
-
+    $sql = "SELECT * " . $query . " LIMIT $offset, $pageCount";
+    $result = mysqli_query($connection, $sql);
     mysqli_close($connection);
-
     return array(
         "total_pages" => $total_pages,
-        "data" => $applications,
+        "data" => $result,
         "totalCount" => $count
     );
 }
