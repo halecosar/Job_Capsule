@@ -43,7 +43,7 @@
             $password = Security($_POST["password"]);
 
             if (empty($mailError) && empty($passwordError)) {
-                $sql = "SELECT id, mail, password, role FROM users where mail = ?";
+                $sql = "SELECT id, mail, password, role  FROM users where mail = ? && isDeleted=0";
 
                 if ($stmt = mysqli_prepare($connection, $sql)) {
                     $param_mail = $mail;

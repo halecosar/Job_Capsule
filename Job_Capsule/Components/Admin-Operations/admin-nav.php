@@ -43,6 +43,9 @@ if (empty($_SESSION["loggedin"])) {
                     <li class="nav-item">
                         <a class="nav-link" href="JobList.php">İlanlar</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="candidate.php">Adaylar</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">

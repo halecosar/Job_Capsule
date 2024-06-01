@@ -247,6 +247,78 @@ function saveCv($file)
     );
 }
 
+function getAllCandidates($keyword, $page)
+{
+    include "config.php";
 
+    $pageCount = 3;
+    $offset = ($page - 1) * $pageCount;
+    $query = "";
 
+    $query = "FROM users u WHERE u.role=0 && isDeleted=0";
+
+    if (!empty($keyword)) {
+        $query .= " && (u.fullname LIKE '%$keyword%' or u.mail  LIKE '%$keyword%' or u.phone LIKE '%$keyword%')";
+    }
+
+    $total_sql = "SELECT COUNT(*) " . $query;
+
+    $count_data = mysqli_query($connection, $total_sql);
+    $count = mysqli_fetch_array($count_data)[0];
+    $total_pages = ceil($count / $pageCount); //kaç eleman çekildi kaç sayfa yapılacak. 
+
+    $sql = "SELECT * " . $query . " LIMIT $offset, $pageCount";
+    $result = mysqli_query($connection, $sql);
+    mysqli_close($connection);
+    return array(
+        "total_pages" => $total_pages,
+        "data" => $result,
+        "totalCount" => $count
+    );
+}
+
+function deleteCandidate(int $id)
+{
+    include "config.php";
+
+    $query = "UPDATE users SET isDeleted = 1 WHERE id = ?";
+    $stmt = mysqli_prepare($connection, $query);
+    mysqli_stmt_bind_param($stmt, 'i', $id);
+
+    $result = mysqli_stmt_execute($stmt);
+
+    mysqli_close($connection);
+
+    return $result;
+}
+
+function CandidateAdd($mail, $phone, $fullname)
+{
+    include "config.php";
+
+    // if (empty($status)) {
+    //     $status = 1;
+    // }
+
+    $query = "INSERT INTO users (mail, phone, fullname) VALUES (?, ?, ?)";
+    $stmt = mysqli_prepare($connection, $query);
+
+    if ($stmt === false) {
+        die('MySQL prepare failed: ' . mysqli_error($connection));
+    }
+
+    mysqli_stmt_bind_param($stmt, 'sss', $mail, $phone, $fullname);
+    mysqli_stmt_execute($stmt);
+
+    if (mysqli_stmt_affected_rows($stmt) > 0) {
+        $success = true;
+    } else {
+        $success = false;
+    }
+
+    mysqli_stmt_close($stmt);
+    mysqli_close($connection);
+
+    return $success;
+}
 ?>
