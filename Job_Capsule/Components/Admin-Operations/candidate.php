@@ -25,7 +25,7 @@ $total_pages = $result["total_pages"];
 function createCandidateTable($data)
 {
     $html = '<table class="table">';
-    $html .= '<thead><tr><th>Ad-Soyad</th><th>Mail</th><th>Telefon</th><th>Actions</th></tr></thead>';
+    $html .= '<thead><tr><th>Ad-Soyad</th><th>Mail</th><th>Telefon</th><th>Actions</th><th>CV</th></tr></thead>';
     $html .= '<tbody>';
     foreach ($data as $user) {
         $html .= '<tr>';
@@ -33,9 +33,13 @@ function createCandidateTable($data)
         $html .= '<td>' . $user['mail'] . '</td>';
         $html .= '<td>' . $user['phone'] . '</td>';
         $html .= '<td>';
-        $html .= '<a href="candidateUpdate.php?id=' . $user['id'] . '" class="btn btn-warning btn-sm mb-1">Update</a>';
-        $html .= '<a href="candidateDelete.php?id=' . $user['id'] . '" class="btn btn-danger btn-sm">Delete</a>';
-        $html .= '<a href="pdfviewer.php?id=' . $user['id'] . '&pdf=' . $user['cvfilename'] . '" class="btn btn-info btn-sm">Cv Görüntüle</a>';
+        $html .= '<div class="btn-group" style="display: flex; gap: 10px;">';
+        $html .= '<a href="candidateUpdate.php?id=' . $user['id'] . '" class="btn btn-warning btn-sm mb-1" style="width: 30px;">Update</a>';
+        $html .= '<a href="candidateDelete.php?id=' . $user['id'] . '" class="btn btn-danger btn-sm mb-1" style="width: 30px;">Delete</a>';
+        $html .= '</div>';
+        $html .= '</td>';
+        $html .= '<td>';
+        $html .= '<a href="pdfviewer.php?id=' . $user['id'] . '&pdf=' . $user['cvfilename'] . '" class="btn btn-info btn-sm mb-1" style="width: 125px;" >Cv Görüntüle</a>';
         $html .= '</td>';
         $html .= '</tr>';
     }
@@ -43,6 +47,9 @@ function createCandidateTable($data)
     return $html;
 }
 ?>
+
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">

@@ -15,6 +15,22 @@ if (empty($_SESSION["loggedin"])) {
     <title>Job Capsule</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .navbar {
+            background-color: #191769 !important;
+            /* Navbar arka plan rengi */
+        }
+
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+            /* Navbar bağlantı metin rengi */
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ffffff !important;
+            /* Navbar bağlantı metin rengi - hover durumunda */
+        }
+    </style>
 </head>
 
 <body>
@@ -45,6 +61,10 @@ if (empty($_SESSION["loggedin"])) {
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="candidate.php">Adaylar</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="candidateApplications.php">Başvurular</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">

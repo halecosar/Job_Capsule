@@ -143,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <span class="invalid-feedback"><?php echo $fullnameErr ?></span>
                             </div>
 
-                            <div class="mb-3">"form-outline form-white mb-3">
+                            <div class="mb-3">
                                 <label class="form-label" for="mail">Mail Adresi</label>
                                 <input type="email" id="typemail" name="mail"
                                     class="form-control form-control-sm <?php echo (!empty($mailErr)) ? 'is-invalid' : '' ?>"
@@ -151,7 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <span class="invalid-feedback"><?php echo $mailErr ?></span>
                             </div>
 
-                            <div mb-3="form-outline form-white mb-3">
+                            <div class="mb-3">
                                 <label class="form-label" for="phone">Telefon</label>
                                 <input type="text" id="typephone" name="phone"
                                     class="form-control form-control-sm <?php echo (!empty($phoneErr)) ? 'is-invalid' : '' ?>"
@@ -159,7 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <span class="invalid-feedback"><?php echo $phoneErr ?></span>
                             </div>
 
-                            <div mb-3="form-outline form-white mb-3">
+                            <div class="mb-3">
                                 <label class="form-label" for="lastTitle">Son Ünvan </label>
                                 <input type="text" id="typelastTitle" name="lastTitle"
                                     class="form-control form-control-sm <?php echo (!empty($lastTitleErr)) ? 'is-invalid' : '' ?>"
@@ -167,7 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <span class="invalid-feedback"><?php echo $lastTitleErr ?></span>
                             </div>
 
-                            <div mb-3="form-outline form-white mb-3">
+                            <div class="mb-3">
                                 <label class="form-label" for="lastCompany">Son Çalıştığı Şirket </label>
                                 <input type="text" id="typelastCompany" name="lastCompany"
                                     class="form-control form-control-sm <?php echo (!empty($lastCompanyErr)) ? 'is-invalid' : '' ?>"
@@ -175,7 +175,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <span class="invalid-feedback"><?php echo $lastCompanyErr ?></span>
                             </div>
 
-                            <div mb-3="form-outline form-white mb-3">
+                            <div class="mb-3">
                                 <label class="form-label" for="experienceYear">Toplam Tecrübe Yılı </label>
                                 <input type="text" id="typeexperienceYear" name="experienceYear"
                                     class="form-control form-control-sm <?php echo (!empty($experienceYearErr)) ? 'is-invalid' : '' ?>"
