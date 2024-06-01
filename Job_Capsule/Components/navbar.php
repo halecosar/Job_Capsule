@@ -1,7 +1,10 @@
 <?php
 session_start();
 $loggedIn = isset($_SESSION["loggedin"]) && $_SESSION["loggedin"];
+
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -106,5 +109,6 @@ $loggedIn = isset($_SESSION["loggedin"]) && $_SESSION["loggedin"];
 
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </body>
+
 
 </html>
