@@ -105,26 +105,26 @@ $experienceYear = $candidate['experienceYear'];
 
                             <div class="form-group">
                                 <label for="phone">Telefon</label>
-                                <input type="text" id="typephone" name="phone"
+                                <input type="text" id="typephone" class="form-control" name="phone"
                                     value="<?php echo htmlspecialchars($phone); ?>" />
 
                             </div>
                             <div class="form-group">
                                 <label for="lastTitle">Son Şirketindeki Ünvan</label>
-                                <input type="text" id="typelastTitle" name="lastTitle"
+                                <input type="text" class="form-control" id="typelastTitle" name="lastTitle"
                                     value="<?php echo htmlspecialchars($lastTitle); ?>" />
 
                             </div>
                             <div class="form-group">
                                 <label for="lastCompany">Son Çalıştığı Firma </label>
-                                <input type="text" id="typelastCompany" name="lastCompany"
+                                <input type="text" class="form-control" id="typelastCompany" name="lastCompany"
                                     value="<?php echo htmlspecialchars($lastCompany); ?>" />
 
                             </div>
 
                             <div class="form-group">
                                 <label for="experienceYear">Toplam Çalışma Yılı </label>
-                                <input type="text" id="typeexperienceYear" name="experienceYear"
+                                <input type="text" id="typeexperienceYear" class="form-control" name="experienceYear"
                                     value="<?php echo htmlspecialchars($experienceYear); ?>" />
 
                             </div>

@@ -143,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <span class="invalid-feedback"><?php echo $fullnameErr ?></span>
                             </div>
 
-                            <div mb-3="form-outline form-white mb-3">
+                            <div class="mb-3">"form-outline form-white mb-3">
                                 <label class="form-label" for="mail">Mail Adresi</label>
                                 <input type="email" id="typemail" name="mail"
                                     class="form-control form-control-sm <?php echo (!empty($mailErr)) ? 'is-invalid' : '' ?>"
@@ -184,7 +184,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
 
 
-                            <input type="submit" value="Kaydet" class="btn btn-primary">
+                            <input type="submit" value="Kaydet" class="btn btn-primary mt-3">
+
                         </form>
                     </div>
                 </div>
