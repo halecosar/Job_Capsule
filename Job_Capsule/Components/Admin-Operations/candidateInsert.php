@@ -8,8 +8,8 @@ if (empty($_SESSION["loggedin"])) {
     header("Location: ../../Pages/login.php");
 }
 // Değişkenlerin tanımlanması ve başlangıç değerleri
-$fullname = $mail = $phone = "";
-$fullnameErr = $mailErr = $phoneErr = "";
+$fullname = $mail = $phone = $lastTitle = $lastCompany = $experienceYear = "";
+$fullnameErr = $mailErr = $phoneErr = $lastTitleErr = $lastCompanyErr = $experienceYearErr = "";
 
 // Form gönderildiğinde POST isteğiyle çalışacak kod
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -60,12 +60,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $phone = $_POST["phone"];
     }
 
+    if (empty(trim($_POST["lastTitle"]))) {
+        $lastTitleErr = "Adayın son ünvanını giriniz";
+    } else if (strlen($_POST["phone"]) < 1) {
+        $lastTitleErr = "Eksik karakter girdiniz";
+
+    } else {
+        $lastTitle = $_POST["lastTitle"];
+    }
+
+    if (empty(trim($_POST["lastCompany"]))) {
+        $lastCompanyErr = "Adayın son çalıştığı firmayı giriniz";
+    } else if (strlen($_POST["lastCompany"]) < 1) {
+        $lastCompanyErr = "Eksik karakter girdiniz";
+
+    } else {
+        $lastCompany = $_POST["lastCompany"];
+    }
+
+    if (empty(trim($_POST["experienceYear"]))) {
+        $experienceYearErr = "Adayın toplam çalışma yılını giriniz";
+    } else if (strlen($_POST["experienceYear"]) < 0) {
+        $experienceYearErr = "Eksik karakter girdiniz";
+
+    } else {
+        $experienceYear = intval($_POST["experienceYear"]);
+
+    }
 
 
 
-    if (empty($fullnameErr) && empty($mailErr) && empty($phoneErr)) {
+
+
+
+
+
+
+    if (empty($fullnameErr) && empty($mailErr) && empty($phoneErr) && empty($lastTitleErr) && empty($lastCompanyErr) && empty($experienceYearErr)) {
         // CandidateAdd fonksiyonunu çağır ve dönen değeri kontrol et
-        $candidate_created = CandidateAdd($mail, $phone, $fullname);
+        $candidate_created = CandidateAdd($mail, $phone, $fullname, $lastTitle, $lastCompany, $experienceYear);
 
         // Eğer iş ilanı başarıyla eklendiyse
         if ($candidate_created) {
@@ -125,6 +158,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     value="<?php echo htmlspecialchars($phone); ?>" />
                                 <span class="invalid-feedback"><?php echo $phoneErr ?></span>
                             </div>
+
+                            <div mb-3="form-outline form-white mb-3">
+                                <label class="form-label" for="lastTitle">Son Ünvan </label>
+                                <input type="text" id="typelastTitle" name="lastTitle"
+                                    class="form-control form-control-sm <?php echo (!empty($lastTitleErr)) ? 'is-invalid' : '' ?>"
+                                    value="<?php echo htmlspecialchars($lastTitle); ?>" />
+                                <span class="invalid-feedback"><?php echo $lastTitleErr ?></span>
+                            </div>
+
+                            <div mb-3="form-outline form-white mb-3">
+                                <label class="form-label" for="lastCompany">Son Çalıştığı Şirket </label>
+                                <input type="text" id="typelastCompany" name="lastCompany"
+                                    class="form-control form-control-sm <?php echo (!empty($lastCompanyErr)) ? 'is-invalid' : '' ?>"
+                                    value="<?php echo htmlspecialchars($lastCompany); ?>" />
+                                <span class="invalid-feedback"><?php echo $lastCompanyErr ?></span>
+                            </div>
+
+                            <div mb-3="form-outline form-white mb-3">
+                                <label class="form-label" for="experienceYear">Toplam Tecrübe Yılı </label>
+                                <input type="text" id="typeexperienceYear" name="experienceYear"
+                                    class="form-control form-control-sm <?php echo (!empty($experienceYearErr)) ? 'is-invalid' : '' ?>"
+                                    value="<?php echo htmlspecialchars($experienceYear); ?>" />
+                                <span class="invalid-feedback"><?php echo $experienceYearErr ?></span>
+                            </div>
+
 
                             <input type="submit" value="Kaydet" class="btn btn-primary">
                         </form>

@@ -292,22 +292,20 @@ function deleteCandidate(int $id)
     return $result;
 }
 
-function CandidateAdd($mail, $phone, $fullname)
+function CandidateAdd($mail, $phone, $fullname, $lastTitle, $lastCompany, $experienceYear)
 {
     include "config.php";
 
-    // if (empty($status)) {
-    //     $status = 1;
-    // }
 
-    $query = "INSERT INTO users (mail, phone, fullname) VALUES (?, ?, ?)";
+
+    $query = "INSERT INTO users (mail, phone, fullname, lastTitle, lastCompany, experienceYear) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($connection, $query);
 
     if ($stmt === false) {
         die('MySQL prepare failed: ' . mysqli_error($connection));
     }
 
-    mysqli_stmt_bind_param($stmt, 'sss', $mail, $phone, $fullname);
+    mysqli_stmt_bind_param($stmt, 'ssssss', $mail, $phone, $fullname, $lastTitle, $lastCompany, $experienceYear);
     mysqli_stmt_execute($stmt);
 
     if (mysqli_stmt_affected_rows($stmt) > 0) {
@@ -320,5 +318,38 @@ function CandidateAdd($mail, $phone, $fullname)
     mysqli_close($connection);
 
     return $success;
+}
+
+function editCandidate(int $id, string $mail, string $phone, string $fullname, string $lastTitle, string $lastCompany, int $experienceYear)
+{
+    include "config.php";
+
+
+    $query = "UPDATE users SET mail=?, phone=?, fullname=?, lastTitle=?, lastCompany=?, experienceYear=?  WHERE id=? ";
+
+    $stmt = mysqli_prepare($connection, $query);
+
+    mysqli_stmt_bind_param($stmt, "sssssii", $mail, $phone, $fullname, $lastTitle, $lastCompany, $experienceYear, $id);
+
+    $result = mysqli_stmt_execute($stmt);
+
+    // Sorgu başarılı mı kontrolü
+    if ($result) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+function getCandidateByID(int $id)
+{
+    include "config.php";
+    $query = "SELECT * from users WHERE id='$id'";
+    $result = mysqli_query($connection, $query);
+    $row = mysqli_fetch_assoc($result);
+    mysqli_close($connection);
+    return $row;
+
 }
 ?>

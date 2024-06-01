@@ -25,7 +25,7 @@ $total_pages = $result["total_pages"];
 function createCandidateTable($data)
 {
     $html = '<table class="table">';
-    $html .= '<thead><tr><th>Title</th><th>Short Description</th><th>Location</th><th>Actions</th></tr></thead>';
+    $html .= '<thead><tr><th>Ad-Soyad</th><th>Mail</th><th>Telefon</th><th>Actions</th></tr></thead>';
     $html .= '<tbody>';
     foreach ($data as $user) {
         $html .= '<tr>';
