@@ -204,6 +204,49 @@ function getAllApplications($user_id, $keyword, $page)
     );
 }
 
+function saveCv($file)
+{
+    $message = "";
+    $uploadOK = 1;
+    $fileTempPath = $file["tmp_name"];
+    $fileName = $file["name"];
+    $fileSize = $file["size"];
+    $maxfileSize = ((1024 * 1024) * 1);
+    $desteklenenDosyaUzantisi = "pdf";
+    $uploadFolder = "../file/";
+
+    if ($fileSize > $maxfileSize) {
+        $message = "Dosya boyutu fazla";
+        $uploadOK = 0;
+    }
+    $dosyaAdi_Arr = pathinfo($fileName);
+    $dosyaAdi_uzantisiz = $dosyaAdi_Arr['filename'];
+    $dosya_uzantisi = isset($dosyaAdi_Arr['extension']) ? $dosyaAdi_Arr['extension'] : '';
+
+    if ($dosya_uzantisi != $desteklenenDosyaUzantisi) {
+        $message .= "dosya uzantısı kabul edilemiyor.";
+        $message .= "kabul edilen dosya uzantısı: " . $desteklenenDosyaUzantisi;
+        $uploadOK = 0;
+        $yeni_DosyaAdi = "";
+    } else {
+        $yeni_DosyaAdi = md5(time() . $dosyaAdi_uzantisiz) . '.' . $dosya_uzantisi;
+        $dest_path = $uploadFolder . $yeni_DosyaAdi;
+        if ($uploadOK == 0) {
+            $message .= "Dosya yüklenemedi";
+        } else {
+            if (move_uploaded_file($fileTempPath, $dest_path)) {
+                $message .= "dosya yüklendi.";
+            }
+        }
+    }
+
+    return array(
+        "isSuccess" => $uploadOK,
+        "message" => $message,
+        "cvFile" => $yeni_DosyaAdi
+    );
+}
+
 
 
 ?>

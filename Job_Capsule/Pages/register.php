@@ -32,7 +32,7 @@
     <?php include "../libs/config.php" ?>
     <?php session_start(); ?>
 
-    <?php $fullname = $mail = $password = $passwordConfirm = $phone = $fullnameErr = $mailErr = $passwordErr = $passwordConfirmErr = $phoneErr = ""; ?>
+    <?php $fullname = $mail = $password = $passwordConfirm = $phone = $fullnameErr = $mailErr = $passwordErr = $passwordConfirmErr = $cvFile = $cvFile_err = $phoneErr = ""; ?>
 
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty(trim($_POST["fullname"]))) {
@@ -96,17 +96,29 @@
             }
         }
 
+        if (empty($_FILES["cvFile"]["name"])) {
+            $cvFile_err = "dosya seçiniz.";
+        } else {
+            $result = saveCv($_FILES["cvFile"]);
+            if ($result["isSuccess"] == 0) {
+                $cvFile_err = $result["message"];
+            } else {
+                $cvFile = $result["cvFile"];
+            }
+        }
 
-        if (empty($fullnameErr) && empty($mailErr) && empty($phoneErr) && empty($passwordErr) && empty($passwordConfirmErr)) {
-            $sql = "INSERT INTO users (fullname,mail,phone,password) VALUES (?,?,?,?)";
+
+        if (empty($fullnameErr) && empty($mailErr) && empty($phoneErr) && empty($passwordErr) && empty($passwordConfirmErr) && empty($cvFile_err)) {
+            $sql = "INSERT INTO users (fullname,mail,phone,password,cvfilename) VALUES (?,?,?,?,?)";
 
             if ($stmt = mysqli_prepare($connection, $sql)) {
                 $param_fullname = $fullname;
                 $param_mail = $mail;
                 $param_phone = $phone;
                 $param_password = password_hash($password, PASSWORD_DEFAULT);
+                $param_cvfilename = $cvFile;
 
-                mysqli_stmt_bind_param($stmt, "ssss", $param_fullname, $param_mail, $param_phone, $param_password);
+                mysqli_stmt_bind_param($stmt, "sssss", $param_fullname, $param_mail, $param_phone, $param_password, $param_cvfilename);
 
                 if (mysqli_stmt_execute($stmt)) {
                     // header("location: login.php");
@@ -136,7 +148,7 @@
                         <?php endif; ?>
 
                         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post"
-                            class="card-body p-4 text-center form-container">
+                            class="card-body p-4 text-center form-container" enctype="multipart/form-data">
                             <div>
                                 <h2 class="fw-bold mb-2 text-uppercase">KAYIT OL</h2>
                                 <p class="text-white-50 mb-4"></p>
@@ -193,11 +205,12 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div data-mdb-input-init class="form-outline form-white mb-3">
-                                        <label class="form-label" for="file">CV Yükle</label>
-                                        <input type="file" id="typefile" name="file"
-                                            class="form-control form-control-sm" />
+                                        <label for="cvFile" class="form-label">CV Yükle</label>
+                                        <input type="file"
+                                            class="form-control <?php echo (!empty($cvFile_err)) ? 'is-invalid' : '' ?>"
+                                            name="cvFile" id="cvFile">
+                                        <span class="invalid-feedback"><?php echo $cvFile_err ?></span>
 
-                                        <!-- <small class="error"><?php echo $userNameError; ?></small> -->
                                     </div>
                                 </div>
                             </div>
