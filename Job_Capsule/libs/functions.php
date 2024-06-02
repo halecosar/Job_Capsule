@@ -352,4 +352,71 @@ function getCandidateByID(int $id)
     return $row;
 
 }
+
+function getApplications($keyword, $page)
+{
+    include "config.php";
+
+    $pageCount = 3;
+    $offset = ($page - 1) * $pageCount;
+    $query = "";
+
+    $query = "FROM application a 
+    inner join users u on u.id=a.user_id 
+    inner join jobs j on j.id=a.job_id
+    WHERE u.isDeleted = 0 && j.is_deleted = 0";
+
+    if (!empty($keyword)) {
+        $query .= " && (j.title LIKE '%$keyword%' or u.fullname  LIKE '%$keyword%' or u.mail LIKE '%$keyword%' or u.phone LIKE '%$keyword%')";
+    }
+
+    $total_sql = "SELECT COUNT(*) " . $query;
+
+    $count_data = mysqli_query($connection, $total_sql);
+    $count = mysqli_fetch_array($count_data)[0];
+    $total_pages = ceil($count / $pageCount); //kaç eleman çekildi kaç sayfa yapılacak. 
+
+    $sql = "SELECT a.Id,a.status,j.title,u.fullname,u.mail,u.phone,u.cvfilename,u.experienceYear " . $query . " LIMIT $offset, $pageCount";
+    $result = mysqli_query($connection, $sql);
+    mysqli_close($connection);
+    return array(
+        "total_pages" => $total_pages,
+        "data" => $result,
+        "totalCount" => $count
+    );
+}
+
+function editApplication(int $id, string $status, string $recruiterNote)
+{
+    include "config.php";
+
+
+    $query = "UPDATE application SET status=?, recruiterNote=?  WHERE id=? ";
+
+    $stmt = mysqli_prepare($connection, $query);
+
+    mysqli_stmt_bind_param($stmt, "ssi", $status, $recruiterNote, $id);
+
+    $result = mysqli_stmt_execute($stmt);
+
+    // Sorgu başarılı mı kontrolü
+    if ($result) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+function getApplicationByID(int $id)
+{
+    include "config.php";
+    $query = "SELECT * from application WHERE id='$id'";
+    $result = mysqli_query($connection, $query);
+    $row = mysqli_fetch_assoc($result);
+    mysqli_close($connection);
+    return $row;
+
+}
+
 ?>

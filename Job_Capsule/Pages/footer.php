@@ -50,7 +50,7 @@
             <hr class="mb-4">
             <div class="row align-items-center">
                 <div class="col-md-7 col-lg-8">
-                    <p class="text-center footer-text">© 2024 Job Capsule. Tüm hakları saklıdır.</p>
+                    <p style="text-align: center;">© 2024 Job Capsule. Tüm hakları saklıdır.</p>
                 </div>
                 <div class="col-md-5 col-lg-4 ml-lg-0">
                     <div class="text-center text-md-right">
