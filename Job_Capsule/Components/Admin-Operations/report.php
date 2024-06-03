@@ -1,10 +1,7 @@
 <?php
 require_once "../../libs/functions.php";
 include "admin-nav.php";
-require 'vendor/autoload.php';
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 // session_start();
 

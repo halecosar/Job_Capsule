@@ -72,7 +72,7 @@ $loggedIn = isset($_SESSION["loggedin"]) && $_SESSION["loggedin"];
                             <a class="nav-link" href="job-posting.php">İş İlanları</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">İletişim</a>
+                            <a class="nav-link" href="Communication.php">İletişim</a>
                         </li>
 
 
