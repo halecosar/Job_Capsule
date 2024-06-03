@@ -9,9 +9,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         .gradient-custom {
-            background: #f5f5dc;
-            background: -webkit-linear-gradient(to right, rgb(247, 238, 221), rgb(65, 201, 226));
-            background: linear-gradient(to right, rgb(247, 238, 221), rgb(65, 201, 226));
+            background-color: #191769;
         }
 
         .bg-custom {
@@ -21,6 +19,11 @@
         .form-container {
             max-width: 500px;
             margin: auto;
+        }
+
+        .form-content {
+            color: #E96238;
+
         }
     </style>
 </head>
@@ -150,12 +153,12 @@
                         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post"
                             class="card-body p-4 text-center form-container" enctype="multipart/form-data">
                             <div>
-                                <h2 class="fw-bold mb-2 text-uppercase">KAYIT OL</h2>
+                                <h2 class="fw-bold mb-2 text-uppercase form-content">KAYIT OL</h2>
                                 <p class="text-white-50 mb-4"></p>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <div data-mdb-input-init class="form-outline form-white mb-3">
+                                    <div data-mdb-input-init class="form-outline form-white mb-3 form-content">
                                         <label class="form-label" for="fullname">Ad-Soyad</label>
                                         <input type="text" id="typefullname" name="fullname"
                                             class="form-control form-control-sm <?php echo (!empty($fullnameErr)) ? 'is-invalid' : '' ?>"
@@ -164,7 +167,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div data-mdb-input-init class="form-outline form-white mb-3">
+                                    <div data-mdb-input-init class="form-outline form-white mb-3 form-content">
                                         <label class="form-label" for="mail">Mail Adresi</label>
                                         <input type="email" id="typemail" name="mail"
                                             class="form-control form-control-sm <?php echo (!empty($mailErr)) ? 'is-invalid' : '' ?>"
@@ -173,7 +176,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div data-mdb-input-init class="form-outline form-white mb-3">
+                                    <div data-mdb-input-init class="form-outline form-white mb-3 form-content">
                                         <label class="form-label" for="phone">Telefon</label>
                                         <input type="text" id="typephone" name="phone"
                                             class="form-control form-control-sm <?php echo (!empty($phoneErr)) ? 'is-invalid' : '' ?>"
@@ -184,7 +187,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <div data-mdb-input-init class="form-outline form-white mb-3">
+                                    <div data-mdb-input-init class="form-outline form-white mb-3 form-content">
                                         <label class="form-label" for="typePasswordX">Şifre</label>
                                         <input type="password" id="typePasswordX" name="password"
                                             class="form-control form-control-sm <?php echo (!empty($passwordErr)) ? 'is-invalid' : '' ?>" />
@@ -193,7 +196,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div data-mdb-input-init class="form-outline form-white mb-3">
+                                    <div data-mdb-input-init class="form-outline form-white mb-3 form-content">
                                         <label class="form-label" for="typePasswordXConfirm">Şifre Tekrar</label>
                                         <input type="password" id="typePasswordXConfirm" name="passwordConfirm"
                                             class="form-control form-control-sm <?php echo (!empty($passwordConfirmErr)) ? 'is-invalid' : '' ?>" />
@@ -204,7 +207,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <div data-mdb-input-init class="form-outline form-white mb-3">
+                                    <div data-mdb-input-init class="form-outline form-white mb-3 form-content">
                                         <label for="cvFile" class="form-label">CV Yükle</label>
                                         <input type="file"
                                             class="form-control <?php echo (!empty($cvFile_err)) ? 'is-invalid' : '' ?>"
@@ -220,7 +223,7 @@
                                     class="btn btn-outline-light btn-lg px-5" type="submit">Kayıt Ol</button>
 
                                 <?php if (isset($_SESSION['register_message'])): ?>
-                                    <a href="login.php" class="btn btn-primary btn-large float-right mb-2">Giriş Yap</a>
+                                    <a href="login.php" class="btn btn-outline-light btn-lg px-5">Giriş Yap</a>
                                     <?php
                                     unset($_SESSION['register_message']);
                                     unset($_SESSION['register_type']);
