@@ -66,6 +66,9 @@ if (empty($_SESSION["loggedin"])) {
                     <li class="nav-item">
                         <a class="nav-link" href="applications.php">Başvurular</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="report.php">Rapor Görüntüle</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">

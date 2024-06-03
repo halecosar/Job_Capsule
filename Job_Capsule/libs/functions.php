@@ -419,4 +419,61 @@ function getApplicationByID(int $id)
 
 }
 
+function getJobs2()
+{
+    include "config.php";
+
+    $query = "FROM jobs j WHERE j.is_deleted=0";
+
+    $total_sql = "SELECT COUNT(*) " . $query;
+
+    $count_data = mysqli_query($connection, $total_sql);
+    $count = mysqli_fetch_array($count_data)[0];
+
+    $sql = "SELECT * " . $query;
+    $result = mysqli_query($connection, $sql);
+    mysqli_close($connection);
+    return array(
+        "data" => $result,
+        "totalCount" => $count
+    );
+}
+
+function getApplicationsForReport($keyword, $page, $jobId = "")
+{
+    include "config.php";
+
+    $pageCount = 3;
+    $offset = ($page - 1) * $pageCount;
+    $query = "";
+
+    $query = "FROM application a 
+    inner join users u on u.id=a.user_id 
+    inner join jobs j on j.id=a.job_id
+    WHERE u.isDeleted = 0 && j.is_deleted = 0";
+
+    if (!empty($keyword)) {
+        $query .= " && (j.title LIKE '%$keyword%' or u.fullname  LIKE '%$keyword%' or u.mail LIKE '%$keyword%' or u.phone LIKE '%$keyword%')";
+    }
+
+    if (!empty($jobId)) {
+        $query .= " AND a.job_id = " . intval($jobId); // Job ID'ye göre filtreleme
+    }
+
+    $total_sql = "SELECT COUNT(*) " . $query;
+
+    $count_data = mysqli_query($connection, $total_sql);
+    $count = mysqli_fetch_array($count_data)[0];
+    $total_pages = ceil($count / $pageCount); //kaç eleman çekildi kaç sayfa yapılacak. 
+
+    $sql = "SELECT a.Id,a.status,j.title,u.fullname,u.mail,u.phone,u.cvfilename,u.experienceYear " . $query . " LIMIT $offset, $pageCount";
+    $result = mysqli_query($connection, $sql);
+    mysqli_close($connection);
+    return array(
+        "total_pages" => $total_pages,
+        "data" => $result,
+        "totalCount" => $count
+    );
+}
+
 ?>
