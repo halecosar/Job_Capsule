@@ -1,8 +1,27 @@
-
 # Job Capsule İşe Alım Yönetim Sistemi
 
 Bu proje, bir işe alım sürecini yönetmek için tasarlanmış bir web uygulamasıdır. Kullanıcılar, kayıt olabilir, giriş yapabilir, iş ilanlarını görüntüleyebilir ve başvuruda bulunabilirler.                                         
 Yöneticiler ise iş ilanları oluşturabilir, adayları yönetebilir, adayların süreç kontolünü yapabilir ve raporlar oluşturabilirler.
+## Kurulum Adımları
+
+
+### Depoyu Klonlayın:
+
+    git clone https://github.com/halecosar/Job_Capsule
+
+### Veritabanı Bağlantısı:
+
+libs/config.php dosyasını açın.
+Veritabanı bilgilerinizi (servername, username, password, dbname) güncelleyin.
+
+### Veritabanı Yapılandırması:
+
+    database.sql dosyasını MySQL veritabanınıza import edin.
+    Sunucu Kurulumu:
+
+    PHP ve MySQL destekli bir sunucuya projeyi yükleyin (örneğin, XAMPP veya WAMP).
+    
+
 
 # Kullanım
 
