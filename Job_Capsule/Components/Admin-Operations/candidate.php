@@ -37,8 +37,8 @@ function createCandidateTable($data)
         $html .= '<td>' . $user['phone'] . '</td>';
         $html .= '<td>';
         $html .= '<div class="btn-group" style="display: flex; gap: 10px;">';
-        $html .= '<a href="candidateUpdate.php?id=' . $user['id'] . '" class="btn btn-warning btn-sm mb-1" style="width: 30px;">Update</a>';
-        $html .= '<a href="candidateDelete.php?id=' . $user['id'] . '" class="btn btn-danger btn-sm mb-1" style="width: 30px;">Delete</a>';
+        $html .= '<a href="candidateUpdate.php?id=' . $user['id'] . '" class="btn btn-warning btn-sm mb-1" style="width: 30px;">Güncelle</a>';
+        $html .= '<a href="candidateDelete.php?id=' . $user['id'] . '" class="btn btn-danger btn-sm mb-1" style="width: 30px;">Sil</a>';
         $html .= '</div>';
         $html .= '</td>';
         $html .= '<td>';
@@ -65,7 +65,7 @@ function createCandidateTable($data)
 
 <body>
     <div class="container mt-5">
-        <h1>Candidate Listings</h1>
+        <h1>Aday Listesi</h1>
         <a href="candidateInsert.php" class="btn btn-primary btn-large float-right mb-2">Yeni Aday Ekle</a>
 
 
@@ -74,7 +74,7 @@ function createCandidateTable($data)
             <ul class="pagination">
                 <?php if ($page > 1): ?>
                     <li class="page-item"><a class="page-link"
-                            href="candidate.php?page=<?php echo ($page - 1); ?>">Previous</a></li>
+                            href="candidate.php?page=<?php echo ($page - 1); ?>">Önceki</a></li>
                 <?php endif; ?>
                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                     <li class="page-item <?php if ($i == $page)
@@ -82,7 +82,8 @@ function createCandidateTable($data)
                             href="candidate.php?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
                 <?php endfor; ?>
                 <?php if ($page < $total_pages): ?>
-                    <li class="page-item"><a class="page-link" href="candidate.php?page=<?php echo ($page + 1); ?>">Next</a>
+                    <li class="page-item"><a class="page-link"
+                            href="candidate.php?page=<?php echo ($page + 1); ?>">Sonraki</a>
                     </li>
                 <?php endif; ?>
             </ul>

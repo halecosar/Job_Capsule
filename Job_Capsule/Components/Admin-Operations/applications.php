@@ -56,7 +56,7 @@ function createApplicationTable($data)
         $html .= '<td>' . $statusText . '</td>';
 
         $html .= '<td>';
-        $html .= '<a href="applicationUpdate.php?id=' . $application['Id'] . '" class="btn btn-warning btn-sm mb-1" style="width: 130px;">Update</a>';
+        $html .= '<a href="applicationUpdate.php?id=' . $application['Id'] . '" class="btn btn-warning btn-sm mb-1" style="width: 130px;">Güncelle</a>';
         $html .= '</td>';
 
         $html .= '<td>';
@@ -90,7 +90,7 @@ function createApplicationTable($data)
             <ul class="pagination">
                 <?php if ($page > 1): ?>
                     <li class="page-item"><a class="page-link"
-                            href="applications.php?page=<?php echo ($page - 1); ?>">Previous</a></li>
+                            href="applications.php?page=<?php echo ($page - 1); ?>">Önceki</a></li>
                 <?php endif; ?>
                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                     <li class="page-item <?php if ($i == $page)
@@ -99,7 +99,7 @@ function createApplicationTable($data)
                 <?php endfor; ?>
                 <?php if ($page < $total_pages): ?>
                     <li class="page-item"><a class="page-link"
-                            href="applications.php?page=<?php echo ($page + 1); ?>">Next</a></li>
+                            href="applications.php?page=<?php echo ($page + 1); ?>">Sonraki</a></li>
                 <?php endif; ?>
             </ul>
         </nav>

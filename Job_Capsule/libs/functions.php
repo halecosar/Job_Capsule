@@ -62,7 +62,7 @@ function getJobs($keyword, $page)
     );
 }
 
-function getAllJobs($keyword, $page)
+function getAllJobs($page)
 {
     include "config.php";
 
@@ -72,9 +72,9 @@ function getAllJobs($keyword, $page)
 
     $query = "FROM jobs j WHERE j.is_deleted=0";
 
-    if (!empty($keyword)) {
-        $query .= " && (j.title LIKE '%$keyword%' or j.short_description LIKE '%$keyword%' or j.location LIKE '%$keyword%')";
-    }
+    // if (!empty($keyword)) {
+    //     $query .= " && (j.title LIKE '%$keyword%' or j.short_description LIKE '%$keyword%' or j.location LIKE '%$keyword%')";
+    // }
 
     $total_sql = "SELECT COUNT(*) " . $query;
 

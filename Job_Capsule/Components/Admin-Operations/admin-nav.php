@@ -21,7 +21,7 @@ if (empty($_SESSION["loggedin"])) {
     <title>Job Capsule</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <!-- <style>
+    <style>
         .navbar {
             background-color: #191769 !important;
             /* Navbar arka plan rengi */
@@ -36,7 +36,7 @@ if (empty($_SESSION["loggedin"])) {
             color: #ffffff !important;
             /* Navbar bağlantı metin rengi - hover durumunda */
         }
-    </style> -->
+    </style>
 </head>
 
 <body>
@@ -57,6 +57,10 @@ if (empty($_SESSION["loggedin"])) {
 
 
             <div class="collapse navbar-collapse" id="navbarButtonsExample">
+
+                <a class="navbar-brand me-2">
+                    <img src="../../img/jc-logo1.png" style="width: 50px;" alt="Job Capsule Logo">
+                </a>
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">

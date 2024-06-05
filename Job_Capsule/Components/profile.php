@@ -130,6 +130,7 @@ mysqli_close($connection);
             <button type="submit" class="btn btn-primary">Güncelle</button>
         </form>
     </div>
+    <?php include "../Pages/footer.php"; ?>
 </body>
 
 </html>

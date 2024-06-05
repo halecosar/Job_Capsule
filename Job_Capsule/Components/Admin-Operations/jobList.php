@@ -11,25 +11,26 @@ if (empty($_SESSION["loggedin"])) {
     header("Location: ../../Pages/login.php");
 }
 
-$keyword = "";
+
 $page = 1;
 
-if (isset($_GET["q"]))
-    $keyword = $_GET["q"];
+
 if (isset($_GET["page"]) && is_numeric($_GET["page"]))
     $page = $_GET["page"];
 
-$result = getAllJobs($keyword, $page);
+
+//Tüm ilanları dbden okumak için yazılan metod çağırılır.
+$result = getAllJobs($page);
 
 $total_jobs = $result["totalCount"];
 $data = $result["data"];
 $total_pages = $result["total_pages"];
 
-// Veritabanından gelen iş ilanlarıyla bir tablo oluştur
+// Veritabanından gelen iş ilanlarıyla bir tablo oluşturuldu. 
 function createJobTable($data)
 {
     $html = '<table class="table">';
-    $html .= '<thead><tr><th>Title</th><th>Short Description</th><th>Location</th><th>Actions</th></tr></thead>';
+    $html .= '<thead><tr><th>İlan Başlığı</th><th>İlan Açıklama</th><th>Konum</th><th>İşlemler</th></tr></thead>';
     $html .= '<tbody>';
     foreach ($data as $job) {
         $html .= '<tr>';
@@ -37,8 +38,8 @@ function createJobTable($data)
         $html .= '<td>' . $job['short_description'] . '</td>';
         $html .= '<td>' . $job['location'] . '</td>';
         $html .= '<td>';
-        $html .= '<a href="jobUpdate.php?id=' . $job['id'] . '" class="btn btn-warning btn-sm mb-1">Update</a>';
-        $html .= '<a href="jobDelete.php?id=' . $job['id'] . '" class="btn btn-danger btn-sm">Delete</a>';
+        $html .= '<a href="jobUpdate.php?id=' . $job['id'] . '" class="btn btn-warning btn-sm mb-1">Güncelle</a>';
+        $html .= '<a href="jobDelete.php?id=' . $job['id'] . '" class="btn btn-danger btn-sm">Sil</a>';
         $html .= '</td>';
         $html .= '</tr>';
     }
@@ -60,7 +61,7 @@ function createJobTable($data)
 
 <body>
     <div class="container mt-5">
-        <h1>Job Listings</h1>
+        <h1>İş İlanları</h1>
         <a href="jobInsert.php" class="btn btn-primary btn-large float-right mb-2">Yeni İlan Yayınla</a>
 
 
@@ -68,8 +69,8 @@ function createJobTable($data)
         <nav aria-label="Page navigation">
             <ul class="pagination">
                 <?php if ($page > 1): ?>
-                    <li class="page-item"><a class="page-link"
-                            href="JobList.php?page=<?php echo ($page - 1); ?>">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="JobList.php?page=<?php echo ($page - 1); ?>">Önceki</a>
+                    </li>
                 <?php endif; ?>
                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                     <li class="page-item <?php if ($i == $page)
@@ -77,7 +78,8 @@ function createJobTable($data)
                             href="JobList.php?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
                 <?php endfor; ?>
                 <?php if ($page < $total_pages): ?>
-                    <li class="page-item"><a class="page-link" href="JobList.php?page=<?php echo ($page + 1); ?>">Next</a>
+                    <li class="page-item"><a class="page-link"
+                            href="JobList.php?page=<?php echo ($page + 1); ?>">Sonraki</a>
                     </li>
                 <?php endif; ?>
             </ul>

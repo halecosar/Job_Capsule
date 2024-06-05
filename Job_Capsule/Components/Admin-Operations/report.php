@@ -106,7 +106,7 @@ function createApplicationTable($data)
             <ul class="pagination">
                 <?php if ($page > 1): ?>
                     <li class="page-item"><a class="page-link"
-                            href="applications.php?page=<?php echo ($page - 1); ?>">Previous</a></li>
+                            href="applications.php?page=<?php echo ($page - 1); ?>">Önceki</a></li>
                 <?php endif; ?>
                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                     <li class="page-item <?php if ($i == $page)
@@ -115,7 +115,7 @@ function createApplicationTable($data)
                 <?php endfor; ?>
                 <?php if ($page < $total_pages): ?>
                     <li class="page-item"><a class="page-link"
-                            href="applications.php?page=<?php echo ($page + 1); ?>">Next</a></li>
+                            href="applications.php?page=<?php echo ($page + 1); ?>">Sonraki</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
