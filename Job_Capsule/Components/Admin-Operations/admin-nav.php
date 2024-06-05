@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+if (isset($_SESSION["role"]) && $_SESSION["role"] == 0) {
+    echo "Oturum hatası: Aday rolüyle işlem yapılamaz!";
+    header("location: ../../Pages/logout.php");
+    exit();
+}
+
 if (empty($_SESSION["loggedin"])) {
     header("Location: ../../Pages/login.php");
 }
@@ -15,7 +21,7 @@ if (empty($_SESSION["loggedin"])) {
     <title>Job Capsule</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <style>
+    <!-- <style>
         .navbar {
             background-color: #191769 !important;
             /* Navbar arka plan rengi */
@@ -30,7 +36,7 @@ if (empty($_SESSION["loggedin"])) {
             color: #ffffff !important;
             /* Navbar bağlantı metin rengi - hover durumunda */
         }
-    </style>
+    </style> -->
 </head>
 
 <body>
@@ -69,9 +75,7 @@ if (empty($_SESSION["loggedin"])) {
                     <li class="nav-item">
                         <a class="nav-link" href="report.php">Rapor Görüntüle</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../Communication.php">İletişim</a>
-                    </li>
+
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">

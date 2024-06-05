@@ -3,11 +3,14 @@ include_once "../libs/functions.php";
 include "../libs/config.php";
 require "navbar.php";
 
-// Kullanıcı oturumunu kontrol et
-if (!isset($_SESSION['userId'])) {
-    // Kullanıcı oturumu yoksa giriş sayfasına yönlendir
-    header("Location: login.php");
-    exit;
+if (isset($_SESSION["role"]) && $_SESSION["role"] == 1) {
+    echo "Oturum hatası: Admin rolüyle işlem yapılamaz!";
+    header("location: ../Pages/logout.php");
+    exit();
+}
+
+if (empty($_SESSION["loggedin"])) {
+    header("Location: ../Pages/login.php");
 }
 
 $user_id = $_SESSION['userId'];

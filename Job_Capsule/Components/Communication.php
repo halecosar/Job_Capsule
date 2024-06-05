@@ -1,4 +1,15 @@
 <?php
+require "navbar.php";
+
+if (isset($_SESSION["role"]) && $_SESSION["role"] == 1) {
+    echo "Oturum hatası: Admin rolüyle işlem yapılamaz!";
+    header("location: ../Pages/logout.php");
+    exit();
+}
+
+if (empty($_SESSION["loggedin"])) {
+    header("Location: ../Pages/login.php");
+}
 
 
 // Formdan gelen verileri işleme

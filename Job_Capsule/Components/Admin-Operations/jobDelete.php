@@ -1,4 +1,9 @@
 <?php
+if (isset($_SESSION["role"]) && $_SESSION["role"] == 0) {
+    echo "Oturum hatası: Aday rolüyle işlem yapılamaz!";
+    header("location: ../../Pages/logout.php");
+    exit();
+}
 if (empty($_SESSION["loggedin"])) {
     header("Location: ../../Pages/login.php");
 }

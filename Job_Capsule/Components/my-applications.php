@@ -1,18 +1,21 @@
 <?php
 
-include_once "../libs/functions.php"; ?>
-<?php
-require "navbar.php";
+include_once "../libs/functions.php";
 ?>
+
 <?php
 $keyword = "";
 $page = 1;
+require "navbar.php";
 
-
-if (isset($_SESSION["role"]) && $role == 0) {
-    echo "Oturum hatası: Admin rolüyle başvuru yapılamaz!";
-    header("location: ../Pages/login.php");
+if (isset($_SESSION["role"]) && $_SESSION["role"] == 1) {
+    echo "Oturum hatası: Admin rolüyle işlem yapılamaz!";
+    header("location: ../Pages/logout.php");
     exit();
+}
+
+if (empty($_SESSION["loggedin"])) {
+    header("Location: ../Pages/login.php");
 }
 
 // Sessionda kullanıcı ID'sini kontrol et varsa, değişkeni tanımla yoksa  hata mesajı görüntüle
@@ -47,11 +50,12 @@ $totalPages = $result["total_pages"];
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 
+
 <body>
     <div class="container mt-5">
         <div class="container">
             <form class="d-flex justify-content-end mt-2 mb-2">
-                <input class="form-control me-2" name="q" style="width:100px" type="search" placeholder="Search"
+                <input class="form-control me-2" name="q" style="width:100px" type="search" placeholder="Ara"
                     aria-label="  Search" value="<?= Security($keyword) ?>">
                 <button class="btn btn-outline-primary" type="submit">İlan Ara</button>
             </form>
@@ -116,9 +120,10 @@ $totalPages = $result["total_pages"];
         </div>
 
     </div>
-</body>
-<footer>
     <?php include "../Pages/footer.php"; ?>
-</footer>
+</body>
+
+
+
 
 </html>

@@ -1,9 +1,7 @@
 <?php
 
 include_once "../libs/functions.php"; ?>
-<?php
-require "navbar.php";
-?>
+
 <?php
 $keyword = "";
 $page = 1;
@@ -29,12 +27,15 @@ $totalPages = $result["total_pages"];
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
+<?php
+require "navbar.php";
+?>
 
 <body>
     <div class="container mt-5">
         <div class="container">
             <form class="d-flex justify-content-end mt-2 mb-2">
-                <input class="form-control me-2" name="q" style="width:100px" type="search" placeholder="Search"
+                <input class="form-control me-2" name="q" style="width:100px" type="search" placeholder="Ara"
                     aria-label="  Search" value="<?= Security($keyword) ?>">
                 <button class="btn btn-outline-primary" type="submit">İlan Ara</button>
             </form>
@@ -101,6 +102,9 @@ $totalPages = $result["total_pages"];
         </div>
 
     </div>
+    <?php
+    require "../Pages/footer.php";
+    ?>
 </body>
 
 </html>

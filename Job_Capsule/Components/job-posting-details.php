@@ -1,5 +1,5 @@
 <?php
-include "navbar.php";
+
 include_once "../libs/functions.php";
 include "../libs/config.php";
 $jobDetails = getJobByID($_GET["id"]);
@@ -27,19 +27,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if (mysqli_stmt_execute($stmt)) {
                     mysqli_stmt_store_result($stmt);
-
+                    // Aday daha önce bu ilana başvuru yapmış mı, eğer yaptıysa hata mesajı basılır.
                     if (mysqli_stmt_num_rows($stmt) == 1) {
                         $_SESSION["applicationbad_message"] = "Bu ilana daha önce başvuru yaptınız.";
                         $_SESSION["applicationbad_type"] = "danger";
                     } else {
-                        $user_id = $_SESSION['userId']; // Örnek olarak kullanıcı oturumu değişkeni
-                        $job_id = $_GET['id'];       // Örnek olarak URL'den gelen iş ID'si
-                        $status = 1;                     // Başlangıç durumu
+                        $user_id = $_SESSION['userId'];
+                        $job_id = $_GET['id'];
+                        $status = 1;
 
-                        // ApplicationAdd fonksiyonunu çağır
                         $result = ApplicationAdd($user_id, $job_id, $status);
-
-                        // Sonuçları kontrol et
 
                         if ($result) {
 
@@ -76,6 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
+<?php include "navbar.php"; ?>
 
 <body>
     <div class="container">
@@ -92,10 +90,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="card mb-5">
 
                     <div class="card-body">
-                        <p> Location </p>
+                        <h5> Konum </h5>
                         <p class="card-text"><?= htmlspecialchars($jobDetails['location']) ?></p>
-                        <p> Date Posted </p>
-                        <h5 class="card-text"> <?= htmlspecialchars($jobDetails['created_on']) ?></h5>
+                        <h5> Yayınlama Tarihi </h5>
+                        <p class="card-text"> <?= htmlspecialchars($jobDetails['created_on']) ?></p>
                         <form method="POST">
                             <button class="btn btn-primary btn-large align-self-start" type="submit">İlana
                                 Başvur</button>
@@ -129,6 +127,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </div>
+    <?php
+    require "../Pages/footer.php";
+    ?>
 </body>
 
 </html>
