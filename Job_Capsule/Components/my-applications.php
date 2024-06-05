@@ -8,16 +8,21 @@ require "navbar.php";
 $keyword = "";
 $page = 1;
 
-// Oturumda kullanıcı ID'sini kontrol et
+
+if (isset($_SESSION["role"]) && $role == 0) {
+    echo "Oturum hatası: Admin rolüyle başvuru yapılamaz!";
+    header("location: ../Pages/login.php");
+    exit();
+}
+
+// Sessionda kullanıcı ID'sini kontrol et varsa, değişkeni tanımla yoksa  hata mesajı görüntüle
 if (isset($_SESSION['userId'])) {
-    // Oturumda kullanıcı ID'si varsa, değişkeni tanımlayın
     $user_id = $_SESSION['userId'];
+
 } else {
-    // Oturumda kullanıcı ID'si yoksa, bir hata mesajı görüntüleyin veya kullanıcıyı giriş yapmaya yönlendirin
+
     echo "Oturum hatası: Kullanıcı oturumu bulunamadı!";
-    // Örneğin:
-    // header("Location: login.php");
-    // exit;
+
 }
 
 if (isset($_GET["q"]))
@@ -36,8 +41,7 @@ $totalPages = $result["total_pages"];
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Hakkımızda</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -113,5 +117,8 @@ $totalPages = $result["total_pages"];
 
     </div>
 </body>
+<footer>
+    <?php include "../Pages/footer.php"; ?>
+</footer>
 
 </html>

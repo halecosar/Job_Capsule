@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- user-admin her ikisi de aynı login page ile giriş yapar. -->
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -19,19 +17,11 @@
         .login-logo {
             width: 100%;
             max-width: 500px;
-            /* margin-bottom: 20px; */
             height: 400px;
         }
 
         .form-content {
             color: #E96238;
-
-        }
-
-        .form-control {
-
-            /* Input genişliğini daraltmak için */
-
         }
 
         @media (min-width: 768px) {

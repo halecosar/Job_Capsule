@@ -1,5 +1,5 @@
 <?php
-require "navbar.php";
+
 
 // Formdan gelen verileri işleme
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

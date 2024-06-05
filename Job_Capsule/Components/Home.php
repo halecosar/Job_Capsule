@@ -40,17 +40,47 @@ require "navbar.php";
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
-        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
-        crossorigin="anonymous"></script>
+        <div class="row mt-3">
+            <div class="col-md-7 ">
+                <img src="../img/img_01.png" alt="">
+            </div>
+
+            <div class="col-md-5  ">
+                <h2 style="margin-top:10px; color: #191769"> Sektörel Haberler</h2>
+                <p style="font-weight:bold; margin-top:20px; color: #191769"> Teknolojiye daha fazla kadın eli değecek!
+                </p>
+                <p> Huawei, teknolojiye daha fazla kadın eli değmesi hedefiyle TEV işbirliğinde teknoloji ve bilişim
+                    alanında öğrenim gören kız öğrencilerin eğitimine destek olacak “Huawei Teknoloji Bursu”
+                    kampanyasını başlattı.</p>
+                <p style="font-weight:bold; margin-top:30px; color: #191769">
+                    Gelecek Vaad Eden Meslekler Nelerdir?
+                </p>
+                <p>
+                <p style="font-weight:bold; margin-top:10px; color: #191769">
+                    YEŞİL YAKALILAR ÖNEM KAZANACAK
+                </p>
+                Doğal kaynakların en iyi biçimde kullanılması, çevrenin korunması ve insan sağlığına uygun biçimde
+                geliştirilmesi konusunda çalıştıkları için, bu alanda eğitim gören mühendislere/uzmanlara atıkların
+                arıtılması, gerekli tesislerin kurulması, işletilmesi, yapılanların denetlenmesi, gürültü
+                kaynaklarının belirlenmesi gibi birçok iş düşüyor.
+                </p>
+            </div>
+        </div>
+
+
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+            integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
+            crossorigin="anonymous"></script>
 </body>
 <footer>
     <?php include "../Pages/footer.php"; ?>

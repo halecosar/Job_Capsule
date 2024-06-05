@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -42,6 +38,8 @@
             $fullnameErr = "ad-soyad girmelisiniz";
         } else if (strlen(trim($_POST["fullname"])) < 5 or strlen(trim($_POST["fullname"])) > 15) {
             $fullnameErr = "Ad-Soyad 5-15 karakter arasında olmalıdır.";
+
+            // tr karakter regex'i eklendi
         } else if (!preg_match('/^[a-zA-Z0-9ğüşöçİĞÜŞÖÇ]+$/', $_POST["fullname"])) {
             $fullnameErr = "Ad-Soyad sadece harflerden oluşmalıdır.";
         } else {
@@ -60,6 +58,8 @@
                 if (mysqli_stmt_execute($stmt)) {
                     mysqli_stmt_store_result($stmt);
 
+
+                    // aynı mail adresi ile sadece 1 kere üyelik yapılabilir
                     if (mysqli_stmt_num_rows($stmt) == 1) {
                         $mailErr = "mail daha önce kullanılmıştır.";
                     } else {
@@ -124,7 +124,7 @@
                 mysqli_stmt_bind_param($stmt, "sssss", $param_fullname, $param_mail, $param_phone, $param_password, $param_cvfilename);
 
                 if (mysqli_stmt_execute($stmt)) {
-                    // header("location: login.php");
+
                     $_SESSION['register_message'] = "Üyelik işleminiz başarıyla gerçekleşmiştir.";
                     $_SESSION['register_type'] = "success";
                 } else {

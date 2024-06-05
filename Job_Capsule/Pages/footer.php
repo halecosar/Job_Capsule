@@ -11,6 +11,21 @@
         .footer-text {
             text-align: right;
         }
+
+        /* Yeni stiller */
+        footer {
+            background-color: #191769;
+            color: white;
+            padding-top: 25px;
+            /* Azaltılan yükseklik */
+            padding-bottom: 25px;
+            /* Azaltılan yükseklik */
+        }
+
+        footer .container {
+            max-width: 1200px;
+            /* Genişlik artırıldı */
+        }
     </style>
 </head>
 
@@ -21,8 +36,8 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white mt-5">
-        <div class="container py-4">
+    <footer>
+        <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
                     <h5 class="text-uppercase">ŞİRKET BİLGİLERİ</h5>
@@ -34,7 +49,6 @@
                     <ul class="list-unstyled">
                         <li><a href="#" class="text-white">Anasayfa</a></li>
                         <li><a href="#" class="text-white">Hakkımızda</a></li>
-                        <li><a href="#" class="text-white">İş İlanları</a></li>
                         <li><a href="#" class="text-white">İletişim</a></li>
                     </ul>
                 </div>

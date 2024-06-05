@@ -23,12 +23,12 @@ $loggedIn = isset($_SESSION["loggedin"]) && $_SESSION["loggedin"];
 
         .navbar-nav .nav-link {
             color: #ffffff !important;
-            /* Navbar bağlantı metin rengi */
+
         }
 
         .navbar-nav .nav-link:hover {
             color: #ffffff !important;
-            /* Navbar bağlantı metin rengi - hover durumunda */
+
         }
     </style>
 </head>
