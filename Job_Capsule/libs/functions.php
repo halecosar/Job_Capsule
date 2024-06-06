@@ -186,7 +186,7 @@ function getAllApplications($user_id, $keyword, $page)
 {
     include "config.php";
 
-    $pageCount = 1;
+    $pageCount = 3;
     $offset = ($page - 1) * $pageCount;
     $query = "";
 
