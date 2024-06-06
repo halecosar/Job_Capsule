@@ -10,10 +10,10 @@ if (empty($_SESSION["loggedin"])) {
     header("Location: ../../Pages/login.php");
 }
 
-// Değişkenlerin tanımlanması ve başlangıç değerleri
+
 $status = $recruiterNote = "";
 
-// Form gönderildiğinde POST isteğiyle çalışacak kod
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Formdan gelen verilerin alınması ve doğrulanması
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Sayfaya get ile gelen id parametresini al
+
 
 $id = $_GET['id'] ?? null;
 // ID parametresi boşsa veya geçersizse hata mesajı göster
@@ -55,8 +55,6 @@ if (!$application) {
 }
 
 
-
-// Formda ön tanımlı değerler için ilan verisini değişkenlere ata
 
 $recruiterNote = $application['recruiterNote'];
 $status = $application['status'];

@@ -14,11 +14,11 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] == 0) {
 if (empty($_SESSION["loggedin"])) {
     header("Location: ../../Pages/login.php");
 }
-// Değişkenlerin tanımlanması ve başlangıç değerleri
+
 $fullname = $mail = $phone = $lastTitle = $lastCompany = $experienceYear = "";
 $fullnameErr = $mailErr = $phoneErr = $lastTitleErr = $lastCompanyErr = $experienceYearErr = "";
 
-// Form gönderildiğinde POST isteğiyle çalışacak kod
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Ad-Soyad doğrulama

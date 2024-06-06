@@ -1,4 +1,3 @@
-<!-- footer.php -->
 <style>
     footer {
         background-color: #191769 !important;

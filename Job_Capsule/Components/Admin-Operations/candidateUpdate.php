@@ -41,10 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Sayfaya get ile gelen id parametresini al
 
 $id = $_GET['id'] ?? null;
-// ID parametresi boşsa veya geçersizse hata mesajı göster
+
 if (!$id) {
     echo "Geçersiz aday ID";
     exit;
@@ -53,7 +52,7 @@ if (!$id) {
 // ID'ye göre ilgili iş ilanını getir
 $candidate = getCandidateByID($id);
 
-// İş ilanı bulunamazsa hata mesajı göster
+
 if (!$candidate) {
     echo "Aday bulunamadı";
     exit;
@@ -61,7 +60,7 @@ if (!$candidate) {
 
 
 
-// Formda ön tanımlı değerler için ilan verisini değişkenlere ata
+
 $fullname = $candidate['fullname'];
 $mail = $candidate['mail'];
 $phone = $candidate['phone'];

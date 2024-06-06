@@ -12,14 +12,14 @@ if (isset($_SESSION["role"]) && $_SESSION["role"] == 0) {
 if (empty($_SESSION["loggedin"])) {
     header("Location: ../../Pages/login.php");
 }
-// Değişkenlerin tanımlanması ve başlangıç değerleri
+
 $title = $short_description = $long_description = $location = $isActive = "";
 $title_err = $short_description_err = $long_description_err = $location_err = $isActive_err = "";
 
-// Form gönderildiğinde POST isteğiyle çalışacak kod
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // Başlık doğrulama
+
     $input_title = trim($_POST["title"]);
     if (empty($input_title)) {
         $title_err = "Başlık boş geçilemez.";
@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $title = Security($input_title);
     }
 
-    // Kısa açıklama doğrulama
+
     $input_short_description = trim($_POST["short_description"]);
     if (empty($input_short_description)) {
         $short_description_err = "Kısa açıklama boş geçilemez.";
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $short_description = Security($input_short_description);
     }
 
-    // Uzun açıklama doğrulama
+
     $input_long_description = trim($_POST["long_description"]);
     if (empty($input_long_description)) {
         $long_description_err = "Uzun açıklama boş geçilemez.";
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $long_description = Security($input_long_description);
     }
 
-    // Konum doğrulama
+
     $input_location = trim($_POST["location"]);
 
     if (empty($input_location)) {
@@ -66,20 +66,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $last_modified_on = date("Y-m-d H:i:s");
 
     if (empty($title_err) && empty($short_description_err) && empty($long_description_err) && empty($location_err) && empty($last_modified_by_err)) {
-        // createJob fonksiyonunu çağır ve dönen değeri kontrol et
+
         $job_created = createJob($title, $short_description, $long_description, $location, $isDeleted, $isActive, $created_by, $last_modified_by);
 
         // Eğer iş ilanı başarıyla eklendiyse
         if ($job_created) {
-            // Başarılı mesajını ayarla
+
             $_SESSION['message'] = $title . " isimli iş ilanı eklendi";
             $_SESSION['type'] = "success";
             // Yönlendirme yap
             header('Location: JobList.php');
-            // Kodun burada sonlanması için exit() fonksiyonunu kullan
+
             exit();
         } else {
-            // Eğer iş ilanı eklenemediyse hata mesajını görüntüle
+
             echo "Hata oluştu.";
         }
     }

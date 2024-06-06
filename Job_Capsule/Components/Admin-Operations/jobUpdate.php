@@ -38,10 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Sayfaya get ile gelen id parametresini al
 $id = $_GET['id'] ?? null;
 
-// ID parametresi boşsa veya geçersizse hata mesajı göster
+
 if (!$id) {
     echo "Geçersiz iş ilanı ID";
     exit;
@@ -50,13 +49,13 @@ if (!$id) {
 // ID'ye göre ilgili iş ilanını getir
 $job = getJobByID($id);
 
-// İş ilanı bulunamazsa hata mesajı göster
+
 if (!$job) {
     echo "İş ilanı bulunamadı";
     exit;
 }
 
-// Formda ön tanımlı değerler için ilan verisini değişkenlere ata
+
 $title = $job['title'];
 $short_description = $job['short_description'];
 $long_description = $job['long_description'];

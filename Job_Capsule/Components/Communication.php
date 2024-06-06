@@ -71,7 +71,7 @@ require "navbar.php";
                     <textarea name="message" placeholder="Mesajınız" required></textarea>
                     <button type="submit">Gönder</button>
                 </form>
-                <!-- E-posta gönderme sonucunu kullanıcıya gösterme -->
+
                 <?php if (isset($message)): ?>
                     <div class="alert alert-success"><?php echo $message; ?></div>
                 <?php endif; ?>

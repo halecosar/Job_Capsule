@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <style>
     .alert {
         margin-top: 20px;
-        /* Mesajın formdan biraz aşağıda görünmesi için boşluk ekleyin */
+
     }
 </style>
 
