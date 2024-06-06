@@ -40,6 +40,10 @@
 
     $mail = $password = $mailError = $passwordError = $login_err = "";
 
+    if (isset($_COOKIE['mail'])) {
+        $mail = $_COOKIE['mail'];
+    }
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($_POST["mail"])) {
             $mailError = "Mail alanını boş bırakamazsınız";
@@ -67,7 +71,7 @@
                                     $_SESSION["userId"] = $id;
                                     $_SESSION["mail"] = $mail;
                                     $_SESSION["role"] = $role;
-
+                                    setcookie("mail", $mail, time() + (86400 * 30), "/");
                                     if ($role == 0) {
                                         header("location: ../Components/home.php");
                                     } else if ($role == 1) {
@@ -156,5 +160,3 @@
         </div>
     </section>
 </body>
-
-</html>

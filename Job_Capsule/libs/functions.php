@@ -1,10 +1,18 @@
-<!-- kullanıcı bilgilerini tutarken kullanılacak bir güvenlik fonksiyonu; -->
+<!-- kullanıcı bilgilerini tutarken kullanılacak xss güvenlik fonksiyonu; -->
 <?php
 function Security($userData)
 {
     $userData = trim($userData);
     $userData = stripslashes($userData);
     $userData = htmlspecialchars($userData);
+
+    $search = array(
+        '@<script[^>]*?>.*?</script>@si',   // JavaScript etiketleri
+        '@<[\/\!]*?[^<>]*?>@si',            // HTML etiketleri
+        '@<style[^>]*?>.*?</style>@siU',    // CSS etiketleri
+        '@<![\s\S]*?--[ \t\n\r]*>@'         // Yorumlar
+    );
+    $userData = preg_replace($search, '', $userData);
 
     return $userData;
 }

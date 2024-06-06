@@ -8,13 +8,28 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .cookie-banner a {
+            color: #ffa;
+        }
+    </style>
 </head>
 
-<?php
-require "navbar.php";
-?>
-
 <body>
+    <?php require "navbar.php"; ?>
+
     <div class="container mt-5">
         <div class="row">
             <div class="col-12">
@@ -46,7 +61,6 @@ require "navbar.php";
             <div class="col-md-7 ">
                 <img src="../img/img_01.png" alt="">
             </div>
-
             <div class="col-md-5  ">
                 <h2 style="margin-top:10px; color: #191769"> Sektörel Haberler</h2>
                 <p style="font-weight:bold; margin-top:20px; color: #191769"> Teknolojiye daha fazla kadın eli değecek!
@@ -70,9 +84,13 @@ require "navbar.php";
         </div>
     </div>
 
-    <?php
-    require "../Pages/footer.php";
-    ?>
+    <?php require "../Pages/footer.php"; ?>
+
+    <!-- Çerez Bildirim Çubuğu -->
+    <div id="cookie-banner" class="cookie-banner">
+        Bu web sitesi, deneyiminizi iyileştirmek için çerezler kullanır. <a href="#">Daha fazla bilgi</a>.
+        <button class="btn btn-primary btn-sm ms-2" id="accept-cookies">Kabul Et</button>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
@@ -83,6 +101,25 @@ require "navbar.php";
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
         integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous">
         </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Çerez onayı daha önce verildiyse, çubuğu gizle
+            if (document.cookie.includes('cookies_accepted=true')) {
+                document.getElementById('cookie-banner').style.display = 'none';
+            } else {
+                // Çerez onayı verilmemişse, çubuğu göster
+                document.getElementById('cookie-banner').style.display = 'block';
+            }
+
+            // Kabul et butonuna tıklanırsa
+            document.getElementById('accept-cookies').addEventListener('click', function () {
+                // Çerezi ayarla
+                document.cookie = 'cookies_accepted=true; max-age=31536000; path=/';
+                // Çubuğu gizle
+                document.getElementById('cookie-banner').style.display = 'none';
+            });
+        });
+    </script>
 </body>
 
 </html>

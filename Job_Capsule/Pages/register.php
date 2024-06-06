@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else if (!preg_match('/^[a-zA-Z0-9ğüşöçİĞÜŞÖÇ ]+$/', $_POST["fullname"])) {
         $fullnameErr = "Ad-Soyad sadece harflerden ve boşluklardan oluşmalıdır.";
     } else {
-        $fullname = trim($_POST["fullname"]);
+        $fullname = Security($_POST["fullname"]);
     }
 
     // E-posta doğrulama
@@ -24,14 +24,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $sql = "SELECT id FROM users WHERE mail = ?";
         if ($stmt = mysqli_prepare($connection, $sql)) {
-            $param_email = trim($_POST["mail"]);
+            $param_email = Security($_POST["mail"]);
             mysqli_stmt_bind_param($stmt, "s", $param_email);
             if (mysqli_stmt_execute($stmt)) {
                 mysqli_stmt_store_result($stmt);
                 if (mysqli_stmt_num_rows($stmt) == 1) {
                     $mailErr = "Bu mail adresi zaten kullanılıyor.";
                 } else {
-                    $mail = trim($_POST["mail"]);
+                    $mail = Security($_POST["mail"]);
                 }
             } else {
                 echo "Hata oluştu: " . mysqli_error($connection);
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else if (!preg_match('/^[0-9]{10}$/', $_POST["phone"])) {
         $phoneErr = "Telefon numarasını başında 0 olmadan 10 haneli giriniz.";
     } else {
-        $phone = trim($_POST["phone"]);
+        $phone = Security($_POST["phone"]);
     }
 
     // Şifre doğrulama
@@ -55,14 +55,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else if (strlen(trim($_POST["password"])) < 6) {
         $passwordErr = "Şifre en az 6 karakterden oluşmalıdır.";
     } else {
-        $password = trim($_POST["password"]);
+        $password = Security($_POST["password"]);
     }
 
     // Şifre tekrar doğrulama
     if (empty(trim($_POST["passwordConfirm"]))) {
         $passwordConfirmErr = "Şifre tekrarı girmelisiniz.";
     } else {
-        $passwordConfirm = trim($_POST["passwordConfirm"]);
+        $passwordConfirm = Security($_POST["passwordConfirm"]);
         if (empty($passwordErr) && ($password != $passwordConfirm)) {
             $passwordConfirmErr = "Şifreler eşleşmiyor.";
         }
