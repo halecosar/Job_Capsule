@@ -2,6 +2,11 @@
 
 Bu proje, bir işe alım sürecini yönetmek için tasarlanmış bir web uygulamasıdır. Kullanıcılar, kayıt olabilir, giriş yapabilir, iş ilanlarını görüntüleyebilir ve başvuruda bulunabilirler.                                         
 Yöneticiler ise iş ilanları oluşturabilir, adayları yönetebilir, adayların süreç kontolünü yapabilir ve raporlar oluşturabilirler.
+
+![uml-diagram](https://github.com/halecosar/Job_Capsule/assets/142445977/f8f6c28f-0562-4ecd-b506-0aef7349b2d9)
+
+
+
 ## Kurulum Adımları
 
 
