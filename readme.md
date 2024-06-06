@@ -68,7 +68,7 @@ Veritabanı bilgilerinizi (servername, username, password, dbname) güncelleyin.
 ![recruiter-hp](https://github.com/halecosar/Job_Capsule/assets/142445977/dca8ada8-3b51-48f5-876c-9e8eb440dbb1)
 ![candidate-list](https://github.com/halecosar/Job_Capsule/assets/142445977/a0c6a571-e45c-4d88-b420-869e2d8130a8)
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+
 
 
 ## License
