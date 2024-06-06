@@ -62,6 +62,7 @@ $totalPages = $result["total_pages"];
             </form>
         </div>
 
+
         <div class="container">
             <div class="row">
                 <h4><?php echo $totalCount . " adet başvurunuz bulunmaktadır "; ?></h4>
@@ -119,6 +120,7 @@ $totalPages = $result["total_pages"];
                 <?php endif; ?>
             </div>
         </div>
+        <br>
 
     </div>
     <?php include "../Pages/footer.php"; ?>

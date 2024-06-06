@@ -4,7 +4,7 @@ include_once "../libs/functions.php";
 include "../libs/config.php";
 $jobDetails = getJobByID($_GET["id"]);
 ?>
-
+<?php include "navbar.php"; ?>
 <?php
 
 $loggedIn = isset($_SESSION["loggedin"]) && $_SESSION["loggedin"];
@@ -74,7 +74,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
-<?php include "navbar.php"; ?>
+<style>
+    .alert {
+        margin-top: 20px;
+        /* Mesajın formdan biraz aşağıda görünmesi için boşluk ekleyin */
+    }
+</style>
 
 <body>
     <div class="container">
@@ -98,6 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <form method="POST">
                             <button class="btn btn-primary btn-large align-self-start" type="submit">İlana
                                 Başvur</button>
+
 
                             <?php if (isset($_SESSION['application_message'])): ?>
                                 <div class="alert alert-<?php echo $_SESSION['application_type']; ?>">

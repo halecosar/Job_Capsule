@@ -1,7 +1,7 @@
 <?php
 require "../../libs/functions.php";
 include "admin-nav.php";
-session_start();
+// session_start();
 
 if (isset($_SESSION["role"]) && $_SESSION["role"] == 0) {
     echo "Oturum hatası: Aday rolüyle işlem yapılamaz!";

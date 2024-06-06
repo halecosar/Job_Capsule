@@ -59,7 +59,7 @@ if (!$candidate) {
     exit;
 }
 
-echo $candidate['experienceYear'];
+
 
 // Formda ön tanımlı değerler için ilan verisini değişkenlere ata
 $fullname = $candidate['fullname'];

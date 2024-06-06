@@ -16,8 +16,13 @@ if (empty($_SESSION["loggedin"])) {
 $user_id = $_SESSION['userId'];
 $error = "";
 $success = "";
+$phoneErr = "";
+$mailErr = "";
+$fullnameErr = "";
+$passwordErr = "";
+$passwordConfirmErr = "";
 
-// Kullanıcı bilgilerini veritabanından çek
+// user  bilgilerini veritabanından çek
 $query = "SELECT fullname, mail, phone, password FROM users WHERE id = ?";
 if ($stmt = mysqli_prepare($connection, $query)) {
     mysqli_stmt_bind_param($stmt, "i", $user_id);
@@ -27,17 +32,70 @@ if ($stmt = mysqli_prepare($connection, $query)) {
     mysqli_stmt_close($stmt);
 }
 
-// Form gönderildiğinde
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $fullname = trim($_POST["fullname"]);
-    $mail = trim($_POST["mail"]);
-    $phone = trim($_POST["phone"]);
+
+    if ($fullname != trim($_POST["fullname"])) {
+        if (empty(trim($_POST["fullname"]))) {
+            $fullnameErr = "ad-soyad girmelisiniz";
+        } else if (strlen(trim($_POST["fullname"])) < 5 or strlen(trim($_POST["fullname"])) > 15) {
+            $fullnameErr = "Ad-Soyad 5-15 karakter arasında olmalıdır.";
+
+            // tr karakter regex'i eklendi
+        } else if (!preg_match('/^[a-zA-Z0-9ğüşöçİĞÜŞÖÇ]+$/', $_POST["fullname"])) {
+            $fullnameErr = "Ad-Soyad sadece harflerden oluşmalıdır.";
+        } else {
+            $fullname = $_POST["fullname"];
+        }
+    }
+
+    if ($mail != trim($_POST["mail"])) {
+
+        if (empty(trim($_POST["mail"]))) {
+            $mailErr = "mail girmelisiniz";
+        } else {
+            $sql = "select id FROM users where mail = ?";
+
+            if ($stmt = mysqli_prepare($connection, $sql)) {
+                $param_email = trim($_POST["mail"]);
+                mysqli_stmt_bind_param($stmt, "s", $param_email);
+
+                if (mysqli_stmt_execute($stmt)) {
+                    mysqli_stmt_store_result($stmt);
+
+
+                    // aynı mail adresi ile sadece 1 kere üyelik yapılabilir
+                    if (mysqli_stmt_num_rows($stmt) == 1) {
+                        $mailErr = "mail daha önce kullanılmıştır.";
+                    } else {
+                        $mail = $_POST["mail"];
+                    }
+                } else {
+                    echo mysqli_error($connection);
+                    echo "hata oluştu";
+                }
+            }
+        }
+    }
+
+    if ($phone != trim($_POST["phone"])) {
+
+        if (empty(trim($_POST["phone"]))) {
+            $phoneErr = "telefon numarası girmelisiniz";
+        } else if (strlen($_POST["phone"]) < 10 || strlen($_POST["phone"]) > 10) {
+            $phoneErr = "telefon numarasını başında 0 olmadan 10 haneli giriniz.";
+        } else if (!preg_match('/^[0-9]*$/', $_POST["phone"])) {
+            $phoneErr = "telefon numarası sadece rakamlardan oluşmalıdır.";
+        } else {
+            $phone = $_POST["phone"];
+        }
+    }
     $update_password = isset($_POST["update_password"]) ? true : false;
     $password = $update_password && isset($_POST["password"]) ? trim($_POST["password"]) : "";
     $confirm_password = $update_password && isset($_POST["confirm_password"]) ? trim($_POST["confirm_password"]) : "";
 
     if ($update_password && $password != $confirm_password) {
-        $error = "Şifreler eşleşmiyor.";
+        $passwordConfirmErr = "Şifreler eşleşmiyor.";
     } else {
         if ($update_password) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
@@ -45,16 +103,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $hashed_password = $current_password;
         }
 
-        // Kullanıcı bilgilerini güncelle
-        $update_query = "UPDATE users SET fullname = ?, mail = ?, phone = ?, password = ? WHERE id = ?";
-        if ($stmt = mysqli_prepare($connection, $update_query)) {
-            mysqli_stmt_bind_param($stmt, "ssssi", $fullname, $mail, $phone, $hashed_password, $user_id);
-            if (mysqli_stmt_execute($stmt)) {
-                $success = "Profiliniz başarıyla güncellendi.";
-            } else {
-                $error = "Profil güncelleme başarısız oldu.";
+        if (empty($fullnameErr) && empty($mailErr) && empty($phoneErr) && empty($passwordErr) && empty($passwordConfirmErr)) {
+            $update_query = "UPDATE users SET fullname = ?, mail = ?, phone = ?, password = ? WHERE id = ?";
+            if ($stmt = mysqli_prepare($connection, $update_query)) {
+                mysqli_stmt_bind_param($stmt, "ssssi", $fullname, $mail, $phone, $hashed_password, $user_id);
+                if (mysqli_stmt_execute($stmt)) {
+                    //session'a maili tekrar attık. heder ile sayfayı refresh ettik.
+                    $success = "Profiliniz başarıyla güncellendi.";
+                    $_SESSION["mail"] = $mail;
+                    header("location: profile.php");
+                } else {
+                    $error = "Profil güncelleme başarısız oldu.";
+                }
+                mysqli_stmt_close($stmt);
             }
-            mysqli_stmt_close($stmt);
         }
     }
 }
@@ -74,7 +136,7 @@ mysqli_close($connection);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script>
 
-        // kullanıcı şifresini güncellemek istemeyebilir.
+        // kullanıcı şifresini güncellemek istemeyebilir. Default olarak checked geliyor kutucuk.
         function togglePasswordFields() {
             var checkbox = document.getElementById('update_password');
             var passwordFields = document.getElementsByClassName('password-field');
@@ -86,51 +148,53 @@ mysqli_close($connection);
 </head>
 
 <body>
-    <div class="container mt-5">
+    <div class="container">
         <div class="text-center mb-4">
             <i class="fas fa-user-circle fa-6x"></i>
         </div>
         <h2>ÜYELİK BİLGİLERİM</h2>
-        <?php if (!empty($error)): ?>
-            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-        <?php endif; ?>
-        <?php if (!empty($success)): ?>
-            <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
-        <?php endif; ?>
+
         <form action="profile.php" method="POST">
-            <div class="form-group">
-                <label for="fullname">Ad-Soyad</label>
-                <input type="text" class="form-control" id="fullname" name="fullname"
-                    value="<?= htmlspecialchars($fullname) ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="mail">E-posta</label>
-                <input type="email" class="form-control" id="mail" name="mail" value="<?= htmlspecialchars($mail) ?>"
-                    required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Telefon</label>
-                <input type="text" class="form-control" id="phone" name="phone" value="<?= htmlspecialchars($phone) ?>"
-                    required>
-            </div>
+
+            <label for="fullname">Ad-Soyad</label>
+            <input type="text" class="form-control  <?php echo (!empty($fullnameErr)) ? 'is-invalid' : '' ?>"
+                id="fullname" name="fullname" value="<?= htmlspecialchars($fullname) ?>" <?php if (!empty($fullnameErr)): ?> /> <span class="invalid-feedback"><?php echo $fullnameErr; ?></span>
+            <?php endif; ?>
+
+            <label for="mail">E-posta</label>
+            <input type="email" class="form-control <?php echo (!empty($mailErr)) ? 'is-invalid' : '' ?>" id="mail"
+                name="mail" value="<?= htmlspecialchars($mail) ?>" <?php if (!empty($mailErr)): ?> />
+                <span class="invalid-feedback"><?php echo $mailErr; ?></span>
+            <?php endif; ?>
+
+
+            <label for="phone">Telefon</label>
+            <input type="text" class="form-control <?php echo (!empty($phoneErr)) ? 'is-invalid' : '' ?>" id="phone"
+                name="phone" value="<?php echo htmlspecialchars($phone); ?>" />
+            <?php if (!empty($phoneErr)): ?>
+                <span class="invalid-feedback"><?php echo $phoneErr; ?></span>
+            <?php endif; ?>
+
+            <hr>
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="update_password" name="update_password"
                     onclick="togglePasswordFields()" checked>
-                <label class="form-check-label" for="update_password">Şifremi güncellemek istiyorum</label>
+                <label class="form-check-label" for="update_password"> Şifremi güncellemek istiyorum</label>
             </div>
-            <div class="form-group">
-                <label for="password">Şifre</label>
-                <input type="password" class="form-control password-field" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="confirm_password">Şifre Tekrar</label>
-                <input type="password" class="form-control password-field" id="confirm_password" name="confirm_password"
-                    required>
-            </div>
+
+            <label for="password">Şifre</label>
+            <input type="password" class="form-control password-field" id="password" name="password" required>
+
+
+            <label for="confirm_password">Şifre Tekrar</label>
+            <input type="password" class="form-control password-field" id="confirm_password" name="confirm_password"
+                required>
+
             <button type="submit" class="btn btn-primary">Güncelle</button>
         </form>
     </div>
-    <?php include "../Pages/footer.php"; ?>
+
 </body>
+<?php include "../Pages/footer.php"; ?>
 
 </html>
